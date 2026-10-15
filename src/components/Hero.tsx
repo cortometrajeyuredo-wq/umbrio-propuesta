@@ -24,20 +24,12 @@ export const Hero = () => {
         <h1>Umbrío</h1>
         <p>El misterio ancetral de Tunja</p>
       </TitleWrapper>
-      <AnimatedButton label1="Descarga la app" label2="Ahora" label3="Disponible en App Store" $absolute={true} />
-
       <StoryTextWrapper>
         <p>
           Adéntrate en la sombras de Tunja y descubre el poder de sus leyendas
           rurales hecha Cine{" "}
         </p>
       </StoryTextWrapper>
-      <RankingWrapper>
-        <h2>9/10</h2>
-      </RankingWrapper>
-      <QRWrapper>
-        <img src={qr} alt="QR Code" />
-      </QRWrapper>
     </HeroSeccion>
   );
 };

@@ -14,7 +14,7 @@ const App = () => {
       <Videojuego />
       <Personajes/>
       <Making/>
-
+     
       <Locaciones />
     </>
   );

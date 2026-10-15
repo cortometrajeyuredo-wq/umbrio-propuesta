@@ -12,7 +12,7 @@ import CojínesDelZaqueAntes from "../assets/img-tunja/CojinesdelZaqueAntes.webp
 import CojínesDelZaqueAhora from "../assets/img-tunja/CojinesdelZaqueAhora.webp";
 
 import catedral_antes from "../assets/img-tunja/catedral_antesMobil.webp"
-import catedral_ahora from "../assets/img-tunja/Catedral_AhoraMobil.webp"
+import catedral_ahora from "../assets/img-tunja/catedral_ahoraMobil.webp"
 import sanFrancisco_antes from "../assets/img-tunja/sanFrancisco_antesMobil.webp"
 import sanFrancisco_ahora from "../assets/img-tunja/sanFrancisco_ahoraMobil.webp"
 import pozoDonato from "../assets/img-tunja/pozo_donatoMobil.webp"

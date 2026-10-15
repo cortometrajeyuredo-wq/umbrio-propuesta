@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Amarante";
+  src: url("./assets/fonts/Amarante-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -9,7 +17,7 @@
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
   --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: "Amarante", Georgia, serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -72,6 +80,40 @@ body::-webkit-scrollbar {
 /* Firefox */
 html {
   scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+a[href],
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+select,
+summary {
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-enabled,
+  body.custom-cursor-enabled * {
+    cursor: none !important;
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 650ms ease-out, transform 650ms ease-out;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
 
 h1,

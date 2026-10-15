@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import {CarruselLocaciones} from "../components/CarouselLocations"
 import brujula from "../assets/img/brujula.webp";
@@ -11,14 +11,20 @@ import { device } from "../pantallas/breakpoints";
 
 export const Locaciones = () => {
     const [openMapa, setOpenMapa] = useState(false);
+    const mapButtonRef = useRef<HTMLButtonElement>(null);
+    const cerrarMapa = () => {
+      setOpenMapa(false);
+      requestAnimationFrame(() => mapButtonRef.current?.focus());
+    };
    // const { menuAbierto } = useMenu();
    
     return (
-        <CarruselContenedor id="Locaciones">
+        <CarruselContenedor id="Locaciones" data-reveal>
             <CarruselLocaciones />
         <VideoLscModal videoSrc={LocacionesVideo} />
 
            <BotonBrujula
+        ref={mapButtonRef}
         onClick={() => setOpenMapa(true)}
         aria-label="Abrir mapa"
       >
@@ -27,7 +33,7 @@ export const Locaciones = () => {
 
       <ModalMapa
         open={openMapa}
-        onClose={() => setOpenMapa(false)}
+        onClose={cerrarMapa}
       />
         </CarruselContenedor>
     );

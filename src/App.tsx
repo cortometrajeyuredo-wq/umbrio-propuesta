@@ -4,11 +4,17 @@ import {Personajes}from "./components/Personajes";
 import { Videojuego } from "./components/Videojuego";
 import { Making} from "./components/Making";
 import { Locaciones } from "./components/Locations"
+import { Footer } from "./components/Footer";
+import { useSectionReveal } from "./hooks/useSectionReveal";
+import { CustomCursor } from "./components/CustomCursor";
 
 
 const App = () => {
+  useSectionReveal();
+
   return (
     <>
+      <CustomCursor />
       <Hero />
       <Cortometraje />
       <Videojuego />
@@ -16,6 +22,7 @@ const App = () => {
       <Making/>
      
       <Locaciones />
+      <Footer />
     </>
   );
 };

@@ -9,7 +9,7 @@ import fondo from "../assets/img/fondo2.webp";
 export const Personajes = () => {
   //const { menuAbierto } = useMenu();
   return (
-    <PersonajesWrapper>
+    <PersonajesWrapper id="Personajes" data-reveal>
       <Container>
         <Titulo>PERSONAJES</Titulo>
         <CarouselPersonajes />

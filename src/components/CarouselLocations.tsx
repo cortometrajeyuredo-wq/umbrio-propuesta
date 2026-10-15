@@ -307,6 +307,7 @@ const Triangulo = styled.div<{
         $activo ? "3px solid #6b1fa1" : "2px solid #f4a009"};
 
   transition: transform 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.08);

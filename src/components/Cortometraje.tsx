@@ -7,7 +7,7 @@ import { AnimatedButton } from "./AnimatedButton";
 
 export const Cortometraje = () => {
   return (
-    <CortoWrapper>
+    <CortoWrapper id="Corto" data-reveal>
       {/* Se coloca la capa de contenido para que quede por encima del fondo degradado  y el filtro gris */}
       <Container>
 

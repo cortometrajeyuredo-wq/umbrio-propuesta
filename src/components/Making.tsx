@@ -12,7 +12,7 @@ export const Making = () => {
 
   //const { menuAbierto } = useMenu();//
   return (
-    <MakingContenedor id="Making">
+    <MakingContenedor id="Making" data-reveal>
 
       <Titulo>MAKING OFF</Titulo>
 

@@ -8,9 +8,8 @@ import niebla from "../assets/img/niebla.webp";
 export const Hero = () => {
 
   return (
-    <HeroSeccion>
+    <HeroSeccion id="home">
       <Menu />
-      <LogoWrapper>Umbrío</LogoWrapper>
 
       <SombreronImg src={sombreron} alt="Sombreron" />
       <NieblaImg src={niebla} alt="Niebla" />
@@ -49,19 +48,6 @@ const HeroSeccion = styled.section`
     }
 
 `;
-// TODO: Cambiar la etiqueta h1 por la imagen del logo final
-const LogoWrapper = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 1.7rem;
-  font-weight: bold;
-  color: var(--accent);
-  font-family: "Arial Black", sans-serif;
-  //TODO: Cambiar el valor de z-index, una vez definido el estilo final del menú
-  z-index: 2000;
-`;
-
 const SombreronImg = styled.img`
   position: absolute;
   padding-top: 40px;
@@ -107,7 +93,7 @@ const TitleWrapper = styled.div`
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     color: var(--accent);
     font-weight: bold;
-    font-family: "Arial Black", sans-serif;
+    font-family: var(--heading);
   }
   p {
     font-size: 1.5rem;

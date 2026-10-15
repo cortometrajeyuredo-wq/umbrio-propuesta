@@ -45,7 +45,7 @@ export const VideoLscModal = ({ videoSrc }: VideoLscModalProps) => {
       <BotonReabrir
         type="button"
         onClick={abrirVideo}
-        aria-label="Volver a abrir el video"
+        aria-label="Mostrar interpretación en lengua de señas"
       >
         ▶
       </BotonReabrir>
@@ -78,6 +78,8 @@ export const VideoLscModal = ({ videoSrc }: VideoLscModalProps) => {
           <ControlBoton
             type="button"
             onClick={togglePlay}
+            aria-label={reproduciendo ? "Pausar interpretación en lengua de señas" : "Reproducir interpretación en lengua de señas"}
+            aria-pressed={reproduciendo}
           >
             {reproduciendo ? "⏸" : "▶"}
           </ControlBoton>
@@ -92,28 +94,18 @@ export const VideoLscModal = ({ videoSrc }: VideoLscModalProps) => {
 ========================= */
 
 const Overlay = styled.div`
-  position: fixed;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  z-index: 500;
-
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 600;
+  width: clamp(150px, 22vw, 240px);
 
   pointer-events: none;
 
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(6px);
-
-  @media ${device.tablet} {
-    background: transparent;
-    backdrop-filter: none;
+  @media (max-width: 639px) {
+    top: 84px;
+    right: 12px;
+    width: min(170px, 44vw);
   }
 `;
 /* =========================
@@ -133,7 +125,7 @@ const ModalContenedor = styled.div`
    * Para evitar que se salga de la pantalla,
    * usamos el ancho disponible como límite.
    */
-  width: min(103.55%, calc(100% - 40px));
+  width: 100%;
 
   border-radius: 12px;
 
@@ -143,7 +135,7 @@ const ModalContenedor = styled.div`
 
   background: black;
 
-  margin: 20px;
+  margin: 0;
 
   @media ${device.tablet} {
     /*
@@ -260,12 +252,10 @@ const ControlBoton = styled.button`
 ========================= */
 
 const BotonReabrir = styled.button`
-  position: fixed;
-
-  top: 20px;
-  left: 20px;
-
-  z-index: 500;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 600;
 
   width: 50px;
   height: 50px;
@@ -299,11 +289,8 @@ const BotonReabrir = styled.button`
     transform: scale(1.05);
   }
 
-  @media ${device.tablet} {
-    top: 20px;
-    left: 20px;
-
-    width: 50px;
-    height: 50px;
+  @media (max-width: 639px) {
+    top: 84px;
+    right: 12px;
   }
 `;

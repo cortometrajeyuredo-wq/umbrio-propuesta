@@ -10,23 +10,13 @@ import { VideoLscModal } from "./ui/VideoLscModal";
 import { device } from "../pantallas/breakpoints";
 
 export const Locaciones = () => {
-    const [showModal, setShowModal] = useState(true);
     const [openMapa, setOpenMapa] = useState(false);
    // const { menuAbierto } = useMenu();
    
     return (
         <CarruselContenedor id="Locaciones">
             <CarruselLocaciones />
-        {showModal &&(
-            <VideoLscModal
-                videoSrc={LocacionesVideo} 
-                onClose={()=>setShowModal(false)}
-            />
-        )}
-            {/*<BotonLsc
-             // $visible={!showModal && !menuAbierto}
-              onClick={() => setShowModal(true)}
-           />*/}
+        <VideoLscModal videoSrc={LocacionesVideo} />
 
            <BotonBrujula
         onClick={() => setOpenMapa(true)}

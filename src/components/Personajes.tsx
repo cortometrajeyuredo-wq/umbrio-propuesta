@@ -4,11 +4,9 @@ import { CarouselPersonajes } from "./CarouselPersonajes";
 import { VideoLscModal } from "./ui/VideoLscModal";
 //import { BotonLsc } from "./ui/BotonLsc";
 import PersonajesVideo from "../assets/videos/Personajes.mp4";
-import { useState } from "react";
 import fondo from "../assets/img/fondo2.webp";
 
 export const Personajes = () => {
-  const [showModal, setShowModal] = useState(true);
   //const { menuAbierto } = useMenu();
   return (
     <PersonajesWrapper>
@@ -16,12 +14,7 @@ export const Personajes = () => {
         <Titulo>PERSONAJES</Titulo>
         <CarouselPersonajes />
 
-        {showModal && (
-          <VideoLscModal
-            videoSrc={PersonajesVideo}
-            onClose={() => setShowModal(false)}
-          />
-        )}
+        <VideoLscModal videoSrc={PersonajesVideo} />
       </Container>
     </PersonajesWrapper>
   );

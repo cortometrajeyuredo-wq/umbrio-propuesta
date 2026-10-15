@@ -4,13 +4,9 @@ import { device } from "../../pantallas/breakpoints";
 
 interface VideoLscModalProps {
   videoSrc: string;
-  onClose: () => void;
 }
 
-export const VideoLscModal = ({
-  videoSrc,
-  onClose,
-}: VideoLscModalProps) => {
+export const VideoLscModal = ({ videoSrc }: VideoLscModalProps) => {
   const [abierto, setAbierto] = useState(true);
   const [reproduciendo, setReproduciendo] = useState(true);
 

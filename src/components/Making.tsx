@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import fondo_making from "../assets/img/fondo_making.webp"
 import { VideoLscModal } from "./ui/VideoLscModal";
@@ -12,9 +11,6 @@ import { device } from "../pantallas/breakpoints";
 export const Making = () => {
 
   //const { menuAbierto } = useMenu();//
-
-  const [showModal, setShowModal] = useState(true);
-
   return (
     <MakingContenedor id="Making">
 
@@ -30,16 +26,7 @@ export const Making = () => {
         />
       </VideoContainer>
 
-        {showModal &&(
-        <VideoLscModal 
-          videoSrc={MakingVideo}
-          onClose={()=>setShowModal(false)} 
-        />
-        )}
-      {/* <BotonLsc
-        $visible={!showModal && !menuAbierto}
-        onClick={() => setShowModal(true)}
-     />*/}
+      <VideoLscModal videoSrc={MakingVideo} />
     </MakingContenedor>
   );
 };

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { XIcon } from "lucide-react";
 
-import mapaTunja from "../assets/img/mapaTunja.webp";
+import mapaTunja from "../assets/img/mapaTunja.png";
 import { lugares } from "../data/mapaData";
 import pin from "../assets/img/pin.webp";
 import { device } from "../pantallas/breakpoints";
@@ -34,7 +35,7 @@ export const ModalMapa = ({ open, onClose }: ModalMapaProps) => {
     if (event.key === "Escape") onClose();
   };
 
-  return (
+  return createPortal(
     <Overlay onClick={onClose} onKeyDown={handleKeyDown}>
       <Modal role="dialog" aria-modal="true" aria-labelledby="mapa-title" tabIndex={-1} onClick={(event) => event.stopPropagation()}>
         <VisuallyHidden id="mapa-title">Mapa interactivo de locaciones de Tunja</VisuallyHidden>
@@ -55,29 +56,28 @@ export const ModalMapa = ({ open, onClose }: ModalMapaProps) => {
           })}
         </MapaWrapper>
       </Modal>
-    </Overlay>
+    </Overlay>,
+    document.body,
   );
 };
 
 const Overlay = styled.div`
-  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  position: fixed; inset: 0; display: grid; place-items: center; overflow: auto; padding: 1rem; box-sizing: border-box;
   background: #011740; z-index: 900;
 `;
 
 const Modal = styled.div`
-  width: 95vw; max-height: 90vh; padding: 10px; display: flex; align-items: center; justify-content: center;
+  position: relative;
+  width: min(calc(100vw - 2rem), calc(88dvh * 1.77778), 1600px);
   &:focus { outline: none; }
-  @media ${device.tablet} { height: 88vh; padding: 15px; }
-  @media ${device.laptop} { width: 90vw; height: 90vh; padding: 20px; }
-  @media ${device.desktop} { width: 80vw; height: 85vh; }
 `;
 
 const MapaWrapper = styled.div`
-  position: relative; width: 100%; aspect-ratio: 666 / 375; max-height: 90vh;
+  position: relative; width: 100%; aspect-ratio: 16 / 9;
 `;
 
 const Mapa = styled.img`
-  width: 100%; height: 100%; object-fit: contain;
+  display: block; width: 100%; height: 100%; object-fit: contain;
 `;
 
 const Pin = styled.button`

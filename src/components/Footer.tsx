@@ -2,10 +2,15 @@ import styled from "styled-components";
 import umbrioLogo from "../assets/brand/umbrio-logo.png";
 import senaLogo from "../assets/brand/logo-sena.webp";
 import colombiaMagicaLogo from "../assets/brand/logo-colombia-magica.webp";
+import footerSketch from "../assets/img/footer-boceto.jpeg";
 
 export const Footer = () => {
   return (
     <FooterSection data-reveal>
+      <ClosingFrame>
+        <img src={footerSketch} alt="Personajes de Umbrío explorando la ciudad" loading="lazy" />
+      </ClosingFrame>
+      <ClosingCopy><span>La exploración continúa</span><p>Hay historias que siguen vivas después de cerrar el libro.</p></ClosingCopy>
       <FooterGlow aria-hidden="true" />
       <FooterInner>
         <BrandIntro>
@@ -30,13 +35,31 @@ export const Footer = () => {
   );
 };
 
+const ClosingFrame = styled.div`
+  position: relative;
+  width: 100%;
+  background: #09030d;
+  img { display: block; width: 100%; height: auto; filter: grayscale(1) brightness(.74) contrast(1.06); }
+  &::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, #09030d 0%, transparent 10%, transparent 80%, #09030d 100%); }
+`;
+
+const ClosingCopy = styled.div`
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  margin: -1rem auto 3rem;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+  span { color: #76d9d4; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; }
+  p { margin: .5rem 0 0; max-width: 580px; color: #f6e9c7; font: clamp(1.25rem, 2.7vw, 2rem)/1.3 var(--heading); }
+`;
+
 const FooterSection = styled.footer`
   position: relative;
   overflow: hidden;
-  padding: 2.5rem 1.25rem 1.1rem;
+  padding: 0 0 1.1rem;
   color: #f6e9c7;
   background: #09030d;
-  border-top: 1px solid rgba(248, 163, 8, 0.45);
 `;
 
 const FooterGlow = styled.div`
@@ -59,6 +82,7 @@ const FooterInner = styled.div`
   gap: 2rem;
   max-width: 1120px;
   margin: 0 auto;
+  padding: 0 1.25rem;
 
   @media (max-width: 720px) {
     flex-direction: column;

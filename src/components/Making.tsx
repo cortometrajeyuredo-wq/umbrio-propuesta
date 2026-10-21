@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import fondo_making from "../assets/img/fondo_making.webp"
+import biblioteca from "../assets/production/comp_biblioteca.jpeg";
 import { VideoLscModal } from "./ui/VideoLscModal";
 import MakingVideo from "../assets/videos/Making.mp4";
 import MakingOffVideo from "../assets/videos/making_off.mp4";
@@ -27,18 +27,26 @@ export const Making = () => {
       </VideoContainer>
 
       <VideoLscModal videoSrc={MakingVideo} />
+      <ArchiveLink href="/preproduccion/">Explorar la preproducción <span aria-hidden="true">↗</span></ArchiveLink>
     </MakingContenedor>
   );
 };
 // Contenedor principal 
 const MakingContenedor = styled.section`
     position: relative;
+    box-sizing: border-box;
     width: 100%;
     min-height: 100vh;
 
      padding: 40px 16px;
 
-     background-image: url(${fondo_making});
+     background-image: linear-gradient(
+       to bottom,
+       #000 0%,
+       rgba(0, 0, 0, 0.48) 24%,
+       rgba(0, 0, 0, 0.56) 72%,
+       #000 100%
+     ), url(${biblioteca});
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -105,4 +113,24 @@ const StyledVideo = styled.video`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+const ArchiveLink = styled.a`
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  margin-top: 2.5rem;
+  padding: .85rem 1.4rem;
+  border: 1px solid #f4a009;
+  border-radius: 999px;
+  color: #f6e9d2;
+  background: rgba(8, 6, 13, .76);
+  font-family: var(--heading);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  text-decoration: none;
+  transition: background .2s ease, transform .2s ease;
+
+  &:hover { background: #5b3106; transform: translateY(-2px); }
+  &:focus-visible { outline: 3px solid #f4a009; outline-offset: 4px; }
 `;

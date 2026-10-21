@@ -5,7 +5,7 @@ import brujula from "../assets/img/brujula.webp";
 import umbrioLogo from "../assets/brand/umbrio-logo.png";
 import { useActiveSection } from "../hooks/useActiveSection";
 
-const menuItems = [["Home", "#home"], ["Umbrío", "#Corto"], ["Juego", "#Juego"], ["Locaciones", "#Locaciones"], ["Personajes", "#Personajes"], ["Making", "#Making"]] as const;
+const menuItems = [["Inicio", "#home"], ["El corto", "#Corto"], ["Juego", "#Juego"], ["Locaciones", "#Locaciones"], ["Personajes", "#Personajes"], ["Artbook", "#Artbook"], ["Equipo", "#Equipo"]] as const;
 const sectionIds = menuItems.map(([, href]) => href.slice(1));
 
 const MobileMenu = () => {
@@ -33,7 +33,7 @@ export const Menu = () => <><DesktopMenu /><MobileMenu /></>;
 
 const MobileMenuContainer = styled.div`
   display: none;
-  @media (max-width: 639px) { display: block; }
+  @media (max-width: 900px) { display: block; }
 `;
 
 const MobileBrand = styled.a`
@@ -42,7 +42,7 @@ const MobileBrand = styled.a`
 `;
 
 const MobileMenuWrapper = styled.nav<{ $open: boolean }>`
-  position: fixed; inset: 0; width: 100%; height: 100vh; padding: 104px 32px 32px;
+  position: fixed; inset: 0; width: 100%; height: 100vh; padding: 104px 32px 32px; overflow-y: auto;
   background-color: var(--soft-bg); backdrop-filter: blur(12px); z-index: 1000;
   transform: translateX(${(props) => props.$open ? "0" : "100%"}); opacity: ${(props) => props.$open ? 1 : 0}; pointer-events: ${(props) => props.$open ? "auto" : "none"};
   transition: transform .5s cubic-bezier(.77, 0, .175, 1), opacity .3s ease;
@@ -61,7 +61,7 @@ const DesktopMenuWrapper = styled.nav`
   transform: translateX(-50%); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
   a { position: relative; color: #f6e9c7; font-family: var(--heading); font-size: clamp(.86rem, 1.4vw, 1.1rem); font-weight: 400; letter-spacing: 1px; text-decoration: none; transition: color .3s ease; }
   a:hover, a[aria-current="page"] { color: var(--accent); } a::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 0; height: 2px; background: var(--accent); transition: width .3s ease; } a:hover::after, a[aria-current="page"]::after { width: 100%; }
-  @media (max-width: 639px) { display: none; }
+  @media (max-width: 900px) { display: none; }
 `;
 
 const DesktopLinks = styled.ul<{ $align?: "end" }>`

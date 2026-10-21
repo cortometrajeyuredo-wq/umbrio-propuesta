@@ -1,120 +1,51 @@
-import styled from "styled-components";
-import fondo from "../assets/img/fondo.webp"
-import play from "../assets/img/playbutton.webp"
-import trailer from "../assets/img/fondoCorto.webp"
-import { AnimatedButton } from "./AnimatedButton";
+import styled from 'styled-components';
 
+import fondo from '../assets/img/fondo.webp';
+import portada from '../assets/img/portadaTrailler.webp';
 
-export const Cortometraje = () => {
-  return (
-    <CortoWrapper id="Corto" data-reveal>
-      {/* Se coloca la capa de contenido para que quede por encima del fondo degradado  y el filtro gris */}
-      <Container>
+export const Cortometraje = () => (
+  <FilmSection id="Corto" data-reveal>
+    <FilmInner>
+      <Kicker>La historia que abrió el umbral</Kicker>
+      <h2>Cortometraje</h2>
+      <p>En Tunja, dos jóvenes se acercan a relatos que la ciudad todavía guarda. Umbrío transforma sus lugares y leyendas en una experiencia animada de misterio, memoria y descubrimiento.</p>
+      <FilmVisual>
+        <img src={portada} alt="Portada del cortometraje Umbrío" loading="lazy" />
+      </FilmVisual>
+    </FilmInner>
+  </FilmSection>
+);
 
-        <h2>Cortometraje</h2>
-        <TrailerWrapper>
-          <Play src={play} alt="Niebla" />
-
-        </TrailerWrapper>
-        <StoryText>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam modi rerum error ea deserunt numquam, qui nulla commodi quaerat, ipsum exercitationem. Deserunt mollitia ipsum quas consequuntur sit asperiores, nostrum maxime.
-
-
-        </StoryText>
-        <AnimatedButton label1="Ver cortometraje" label2="Completo" $absolute={false} />
-      </Container>
-    </CortoWrapper>
-  )
-}
-
-
-const CortoWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 20px;
+const FilmSection = styled.section`
   position: relative;
-  background-color:red;
-  /* Fondo con filtro de escala de grises */
-    &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-   background-image: url(${fondo});
-    background-size: cover;
-    background-position: top;
-
-    filter: grayscale(100%); 
-
-    z-index: 0;
-  }
-  /* capa degradada para las uniones de los fondops negra-transparente-negra */
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgb(0, 0, 0), transparent, rgb(0, 0, 0) );
-      z-index: 10;
-    }
-
-  /* todo el contenido por encima */
-  > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  @media (max-width: 768px) {
-    padding: 50px 10px;
-  }
+  padding: clamp(5rem, 10vw, 9rem) 1.25rem;
+  color: #f6e9d2;
+  background: linear-gradient(0deg, #09070d, rgba(9, 7, 13, .87), #09070d), url(${fondo}) center / cover;
 `;
 
-const Container = styled.div`
-position: relative;
-width: 100%;
-height: 100%;
-z-index: 100;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-`;
-
-const TrailerWrapper = styled.div`
-  margin-top: 40px;
-  width: 90%;
-  max-width: 1000px;
-  aspect-ratio: 10 / 6;
-  background: url(${trailer}) center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  
-`;
-
-const Play = styled.img`
-  width: 250px;
- aspect-ratio: 1 / 1;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-const StoryText = styled.p`
-  margin-top: 30px;
-  width: 90%;
-  max-width: 800px;
+const FilmInner = styled.div`
+  position: relative;
+  max-width: 1060px;
+  margin: auto;
   text-align: center;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
+  h2 { margin: .4rem 0 1.3rem; }
+  > p { max-width: 720px; margin: 0 auto 2.3rem; color: #e6d9c8; font: clamp(1rem, 2vw, 1.25rem)/1.7 Georgia, serif; }
 `;
 
+const Kicker = styled.span`
+  color: #76d9d4;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+`;
 
+const FilmVisual = styled.div`
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(231, 172, 82, .48);
+  background: #09070d;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .5);
 
-
+  img { display: block; width: 100%; height: auto; }
+`;

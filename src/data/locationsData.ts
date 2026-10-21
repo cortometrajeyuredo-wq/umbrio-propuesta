@@ -83,7 +83,7 @@ export const slides = [
         id: 8,
         titulo: "SAN AGUSTÍN",
         descripcion:
-            ".......",
+            "Hoy, el antiguo conjunto de San Agustín sigue contando las transformaciones de Tunja. Sus muros reúnen memoria religiosa, cultural y carcelaria, y en Umbrío se convierten en escenario para nuevas preguntas.",
         imagenDesktop: SanAgustínAhora,
         imagenMobil: sanAgustinAhora,
     },

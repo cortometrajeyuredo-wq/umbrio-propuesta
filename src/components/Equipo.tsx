@@ -1,36 +1,198 @@
 import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import styled from "styled-components";
 
-const team = [
-  ["Ivonne Espíndola", "Project Lead · Instructora de Animación"], ["Leonardo Huertas", "Instructor de Animación"], ["Eddy Camacho", "Coordinador académico"], ["Marquiño", "Full Stack"], ["Faizule Perez", "Web & Multimedia Developer"], ["Jose Alejandro", "Web & Multimedia Developer"], ["JhonGe", "Developer Full-Stack & Data-Driven"], ["Dayanna Saavedra", "Web & Multimedia Developer"], ["Ana María Janer", "Animadora 3D"], ["Andrés Cardona", "Integrante del equipo"], ["Adriana Acosta", "Integrante del equipo"], ["Angie Alejandra", "Artista conceptual"], ["Carlos Gustavo", "Game Dev & Sound Design"], ["Ángela Rocio", "Animadora 3D"], ["CrisFer", "Desarrollador de experiencias XR"], ["Dania Stefania", "Animadora 3D"], ["CarMan", "Desarrollador de experiencias XR"], ["Edi Sánchez", "Animador 3D"], ["Edwin Triviño", "Animador 3D"], ["Laura Daniela", "Ilustradora"], ["Felipe Franco", "Animación 3D"], ["Juliana Sánchez", "Integrante del equipo"], ["Estefanía Melo", "Animadora 3D"], ["Luis Cruz", "Animador 3D & auxiliar de auditoría"], ["LuiFer", "Desarrollo publicitario"], ["Karol Yuliana", "Desarrollo publicitario & agroindustria alimentaria"], ["Mathias Daniel", "Contador público & animador digital"], ["Matiw Quintero", "3D Artist"], ["Majo", "Web & Multimedia Developer"], ["Sally Fonseca", "Integrante del equipo"], ["Angel Nicolás", "Animador 3D"], ["Royber Pacheco", "Integrante del equipo"], ["Sharyck Sofía", "Web & Multimedia Developer"], ["Silvia Marcela", "Ing. multimedia & animadora 3D"], ["Sandra Elizabeth", "Ing. sistemas & animadora 3D"], ["Yaizel Melenje", "Creadora de mundos 3D · Ilustradora"], ["Yeidy Paola", "Diseñadora gráfica & visual"], ["Valentina Ochoa", "Ilustradora"], ["Cristian Perez", "Web & Multimedia Developer"], ["Yeisson Agudelo", "Web & Multimedia Developer"], ["Leonardo Vergel", "Animador 3D"], ["Melissa Yepes", "Psicóloga & animadora digital"], ["Nicolas Santiago", "Animación 3D"], ["Nicolas Felipe", "Animación 3D"], ["Yudi Fernanda", "Ing. agroindustrial & desarrollador publicitario"], ["Ana Cristina", "Técnica en secretariado & ADS"], ["Yudis Sanchez", "Web & Multimedia Developer"],
-] as const;
+import { teamMembers } from "../data/equipoData";
+import { VideoLscModal } from "./ui/VideoLscModal";
+import equipoLsc from "../assets/videos/Equipo.mp4";
+
+const visibleCount = 4;
 
 export const Equipo = () => {
-  const [showAll, setShowAll] = useState(false);
-  const members = showAll ? team : team.slice(0, 12);
+  const [startIndex, setStartIndex] = useState(0);
+  const members = Array.from({ length: visibleCount }, (_, offset) =>
+    teamMembers[(startIndex + offset) % teamMembers.length],
+  );
 
-  return <Section id="Equipo" data-reveal>
-    <header><span>Quienes hicieron posible la leyenda</span><h2>Equipo creativo</h2><p>Un proyecto construido por artistas, desarrolladores, animadores y narradores.</p></header>
-    <Grid>{members.map(([name, role]) => <Member key={name}><strong>{name}</strong><span>{role}</span></Member>)}</Grid>
-    <MoreButton type="button" aria-expanded={showAll} onClick={() => setShowAll((value) => !value)}>{showAll ? "Ver menos" : `Ver equipo completo (${team.length})`}</MoreButton>
-  </Section>;
+  const move = (direction: number) => {
+    setStartIndex((index) => (index + direction + teamMembers.length) % teamMembers.length);
+  };
+
+  return (
+    <Section id="Equipo" data-reveal>
+      <VideoLscModal videoSrc={equipoLsc} />
+      <Inner>
+        <Intro>
+          <Eyebrow>Las personas detrás de Umbrío</Eyebrow>
+          <h2>Equipo</h2>
+          <p>Artistas, animadores y desarrolladores que dan vida a este universo.</p>
+        </Intro>
+
+        <Carousel role="region" aria-roledescription="carrusel" aria-label="Integrantes del equipo">
+          <Track>
+            {members.map((member, position) => (
+              <Card key={member.id} $tone={(startIndex + position) % 3}>
+                <Portrait>
+                  <img src={member.imagen} alt="" loading="lazy" />
+                </Portrait>
+                <CardText>
+                  <h3>{member.nombre}</h3>
+                  <p>{member.rol}</p>
+                  {member.link && (
+                    <a href={member.link} target="_blank" rel="noopener noreferrer" aria-label={`Ver portafolio de ${member.nombre}`}>
+                      Ver portafolio <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </CardText>
+              </Card>
+            ))}
+          </Track>
+
+          <Controls>
+            <Arrow type="button" onClick={() => move(-1)} aria-label="Ver integrantes anteriores">
+              <ChevronLeft aria-hidden="true" size={24} />
+            </Arrow>
+            <Count aria-live="polite">
+              <strong>{String(startIndex + 1).padStart(2, "0")}</strong>
+              <span aria-hidden="true"> / </span>
+              {String(teamMembers.length).padStart(2, "0")}
+            </Count>
+            <Arrow type="button" onClick={() => move(1)} aria-label="Ver siguientes integrantes">
+              <ChevronRight aria-hidden="true" size={24} />
+            </Arrow>
+          </Controls>
+        </Carousel>
+
+      </Inner>
+    </Section>
+  );
 };
 
 const Section = styled.section`
-  padding: clamp(4rem, 9vw, 7rem) 1.25rem; color: #f6e9c7; background: radial-gradient(circle at 50% 0, rgba(16,217,222,.14), transparent 35%), #080c10;
-  header { max-width: 670px; margin: 0 auto 2.5rem; text-align: center; }
-  header > span { color: #10d9de; font-family: var(--heading); font-size: .78rem; letter-spacing: .13em; text-transform: uppercase; }
-  h2 { margin-top: .7rem; color: var(--accent); font-size: clamp(2.4rem, 6vw, 4.4rem); }
-  p { margin: 1rem 0 0; line-height: 1.55; }
+  position: relative;
+  padding: clamp(5rem, 9vw, 8rem) 1.25rem;
+  color: #f6e9d2;
+  background: radial-gradient(circle at 50% 8%, rgba(119, 51, 130, .28), transparent 45%), linear-gradient(180deg, #09070d, #1c0a25 58%, #09070d);
 `;
-const Grid = styled.div`
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; max-width: 1120px; margin: 0 auto; border: 1px solid rgba(16,217,222,.22); background: rgba(16,217,222,.22);
+const Inner = styled.div`
+  max-width: 1280px;
+  margin: auto;
 `;
-const Member = styled.article`
-  min-height: 115px; padding: 1.1rem; display: grid; align-content: center; gap: .45rem; background: #0b1315;
-  strong { color: #f6e9c7; font-family: var(--heading); font-size: 1.05rem; } span { color: rgba(246,233,199,.68); font-size: .82rem; line-height: 1.4; }
+
+const Intro = styled.header`
+  max-width: 700px;
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+
+  h2 { margin: .45rem 0 1rem; color: #f4a009; font-size: clamp(3.4rem, 9vw, 7rem); line-height: 1; letter-spacing: .04em; }
+  p { margin: 0; color: #d5c7ca; font: clamp(1rem, 2vw, 1.2rem)/1.6 Georgia, serif; }
 `;
-const MoreButton = styled.button`
-  display: block; margin: 2rem auto 0; padding: .8rem 1.25rem; border: 1px solid #10d9de; border-radius: 999px; color: #10d9de; background: transparent; font-family: var(--heading); transition: background .2s ease, color .2s ease;
-  &:hover, &:focus-visible { color: #071213; background: #10d9de; }
+
+const Eyebrow = styled.span`
+  color: #78d9d6;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+`;
+
+const Carousel = styled.div`
+  max-width: 1240px;
+  margin: auto;
+`;
+
+const Track = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(.75rem, 1.6vw, 1.25rem);
+
+  @media (max-width: 1120px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    > :nth-child(n+4) { display: none; }
+  }
+
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    > :nth-child(n+3) { display: none; }
+  }
+
+  @media (max-width: 540px) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 390px;
+    margin: auto;
+    > :nth-child(n+2) { display: none; }
+  }
+`;
+
+const Card = styled.article<{ $tone: number }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  min-height: 420px;
+  padding: 1.5rem 1rem;
+  border: 1px solid ${({ $tone }) => ["#746259", "#426e6b", "#775579"][$tone]};
+  border-radius: 12px;
+  background: ${({ $tone }) => ["linear-gradient(160deg, #37241f, #1b1116)", "linear-gradient(160deg, #203b3a, #101b24)", "linear-gradient(160deg, #392442, #191124)"][$tone]};
+  box-shadow: 0 20px 35px rgba(0, 0, 0, .25);
+  transition: transform .25s ease, border-color .25s ease;
+
+  &:hover, &:focus-within { transform: translateY(-4px); border-color: #f4a009; }
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+`;
+
+const Portrait = styled.div`
+  overflow: hidden;
+  width: min(170px, 80%);
+  aspect-ratio: 17 / 20;
+  border: 3px solid #c4a464;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .24);
+
+  img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+`;
+
+const CardText = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 1rem .25rem 0;
+  text-align: center;
+
+  h3 { color: #f7e7c7; font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.25; text-transform: none; }
+  p { margin: .55rem 0 1rem; color: #c4b9b6; font-size: .8rem; line-height: 1.4; }
+  a { margin-top: auto; color: #76d9d4; font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-decoration: none; text-transform: uppercase; }
+  a:hover, a:focus-visible { color: #f4a009; text-decoration: underline; }
+`;
+
+const Controls = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+`;
+
+const Arrow = styled.button`
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(244, 160, 9, .65);
+  border-radius: 50%;
+  color: #f4a009;
+  background: transparent;
+
+  &:hover, &:focus-visible { color: #120b17; background: #f4a009; }
+  &:focus-visible { outline: 2px solid #76d9d4; outline-offset: 3px; }
+`;
+
+const Count = styled.span`
+  min-width: 5rem;
+  color: #aa9aa2;
+  font-size: .85rem;
+  letter-spacing: .13em;
+  text-align: center;
+  strong { color: #f6e9d2; font-size: 1.15rem; }
 `;

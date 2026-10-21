@@ -1,123 +1,80 @@
-import styled from "styled-components";
-import HeroBg from "../assets/img/banner.webp";
-import { Menu } from "../components/Menu";
-import sombreron from "../assets/img/sombreron_pose_espalda.webp";
-import niebla from "../assets/img/niebla.webp";
+import styled from 'styled-components';
+import boceto from '../assets/img/banner-boceto.jpeg';
+import { Menu } from './Menu';
 
+export const Hero = () => (
+  <HeroSection id="home">
+    <Menu />
+    <Sketch src={boceto} alt="Dos jóvenes frente a los seres de las leyendas de Umbrío" />
+    <Shade aria-hidden="true" />
+    <HeroContent>
+      <Eyebrow>Un universo nacido en Tunja</Eyebrow>
+      <h1>Donde la memoria de la ciudad se encuentra con sus leyendas.</h1>
+      <HeroLinks>
+        <a href="#Corto">Descubre el cortometraje <span aria-hidden="true">↗</span></a>
+        <a href="#Juego">Explora el juego <span aria-hidden="true">↓</span></a>
+      </HeroLinks>
+    </HeroContent>
+  </HeroSection>
+);
 
-export const Hero = () => {
-
-  return (
-    <HeroSeccion id="home">
-      <Menu />
-
-      <SombreronImg src={sombreron} alt="Sombreron" />
-      <NieblaImg src={niebla} alt="Niebla" />
-      <Niebla2Img src={niebla} alt="Niebla2" />
-
-      <TitleWrapper>
-        <h1>Umbrío</h1>
-        <p>El misterio ancetral de Tunja</p>
-      </TitleWrapper>
-      <StoryTextWrapper>
-        <p>
-          Adéntrate en la sombras de Tunja y descubre el poder de sus leyendas
-          rurales hecha Cine{" "}
-        </p>
-      </StoryTextWrapper>
-    </HeroSeccion>
-  );
-};
-
-// Estilos
-
-const HeroSeccion = styled.section`
+const HeroSection = styled.section`
   position: relative;
-  height: 100vh;
+  overflow: hidden;
+  color: #f6e9d2;
+  background: #08060d;
+`;
+const Sketch = styled.img`
+  display: block;
   width: 100%;
-  background-image: url(${HeroBg}); 
-  background-size: cover;
-  background-position: top;
-  color: white;
-  &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 0, transparent 70%, #000000);
-      z-index: 10;
-    }
-
+  height: auto;
+  filter: grayscale(1) brightness(.76) contrast(1.08);
 `;
-const SombreronImg = styled.img`
+const Shade = styled.div`
   position: absolute;
-  padding-top: 40px;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(8, 6, 13, .06) 43%, rgba(8, 6, 13, .78) 73%, #08060d 100%),
+    linear-gradient(0deg, #08060d 0%, transparent 25%, rgba(8, 6, 13, .2) 100%);
+  @media (max-width: 850px) {
+    background: linear-gradient(0deg, #08060d 8%, transparent 48%);
+  }
+`;
+const HeroContent = styled.div`
+  position: absolute;
   top: 0;
-  left: 20%;
-  transform: translateX(-50%);
-  width: 400px;
-  height: auto;
-`;
-
-const NieblaImg = styled.img`
-  position: absolute;
-  bottom: -200px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 700px;
-  height: auto;
-  z-index: 100;
-  opacity: 0.5;
-  `;
-
-const Niebla2Img = styled.img`
-  position: absolute;
-  bottom: -150px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1200px;
-  height: auto;
-  z-index: 100;
-`;
-
-
-const TitleWrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 500;
-  h1 {
-    font-size: 5rem;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    color: var(--accent);
-    font-weight: bold;
-    font-family: var(--heading);
-  }
-  p {
-    font-size: 1.5rem;
-    margin-top: 20px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    color: var(--accent);
-    font-family: "Arial", sans-serif;
+  right: clamp(1.5rem, 5vw, 6rem);
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: min(38vw, 510px);
+  padding: 6rem 0 3rem;
+  box-sizing: border-box;
+  h1 { margin: .85rem 0 2rem; font-size: clamp(2.3rem, 4.1vw, 4.5rem); line-height: 1.08; color: #f6e9d2; text-shadow: 0 12px 36px #08060d; }
+  @media (max-width: 850px) {
+    position: relative;
+    right: auto;
+    width: 100%;
+    padding: 1.5rem 1.25rem 4rem;
   }
 `;
-const StoryTextWrapper = styled.div`
-  position: absolute;
-  top: 40%;
-  right: 40px;
-  transform: translateY(-50%);
-  text-align: center;
-  z-index: 500;
-  font-family: "Arial", sans-serif;
-  width: 370px;
-  color: white;
-  p {
-    font-size: 1.2rem;
-    margin: 0;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    color: var(--accent);
-    font-family: "Arial", sans-serif;
-  }
+const Eyebrow = styled.span`
+  display: inline-block;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid #d2a66f;
+  color: #f7d9a2;
+  font-size: .73rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+`;
+const HeroLinks = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 48px; padding: .8rem 1rem; border: 1px solid #d2a66f; color: #f6e9d2; background: rgba(8, 7, 12, .5); font-size: .82rem; letter-spacing: .06em; text-decoration: none; text-transform: uppercase; transition: background .2s, color .2s; }
+  a:first-child, a:hover, a:focus-visible { color: #120c10; background: #e7ac52; }
 `;

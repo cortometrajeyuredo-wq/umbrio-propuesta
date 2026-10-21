@@ -26,7 +26,8 @@ export const AnimatedButton = ({ label1, label2, label3, $absolute=false }: { la
             delay: Math.random() * 5,
         }));
 
-        setParticles(data);
+        const frame = requestAnimationFrame(() => setParticles(data));
+        return () => cancelAnimationFrame(frame);
     }, []);
 
     return (

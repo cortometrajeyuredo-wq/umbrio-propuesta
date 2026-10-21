@@ -107,8 +107,27 @@ const CarruselContenedor = styled.section`
 const Slide = styled.div`
   width: 100%;
   height: 100vh;
+  min-height: 680px;
   position: relative;
   overflow: hidden;
+  background: radial-gradient(circle at 65% 45%, #25142c, #08060d 70%);
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    min-height: 100svh;
+    padding: 0 1rem 6rem;
+    box-sizing: border-box;
+
+    picture {
+      display: block;
+      width: min(100%, 620px);
+      margin: 0 auto 1.5rem;
+      z-index: 2;
+    }
+  }
 `;
 
 const Titulo = styled.h1`
@@ -133,18 +152,23 @@ const Titulo = styled.h1`
 
 const Imagen = styled.img`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 52%;
+  left: 61%;
+  transform: translate(-50%, -50%);
+  width: min(58vw, 780px);
+  height: min(68vh, 560px);
+  object-fit: contain;
+  z-index: 2;
 
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-z-index: 2;
-  
-   @media ${device.tablet}{
-   transform: none;
-   }
+  @media (max-width: 900px) {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    height: auto;
+    max-height: min(44vh, 420px);
+  }
 `;
 
 const Overlay = styled.div`
@@ -220,6 +244,17 @@ const Contenido = styled.div`
        font-size: 1.8rem;
   }
 }
+
+  @media (max-width: 900px) {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: min(100%, 620px);
+    max-width: none;
+    margin: 0 auto 2rem;
+    background: none;
+  }
 `;
 
 const Controles = styled.div`
@@ -234,6 +269,17 @@ const Controles = styled.div`
   @media ${device.tablet} {
     bottom: 30px;
     gap: 20px;
+  }
+
+  @media (max-width: 900px) {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: min(100%, 620px);
+    max-width: none;
+    margin: 0 auto 2rem;
+    background: none;
   }
 `;
 

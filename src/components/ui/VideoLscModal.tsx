@@ -4,9 +4,10 @@ import { device } from "../../pantallas/breakpoints";
 
 interface VideoLscModalProps {
   videoSrc: string;
+  videoSrcMobile?: string;
 }
 
-export const VideoLscModal = ({ videoSrc }: VideoLscModalProps) => {
+export const VideoLscModal = ({ videoSrc, videoSrcMobile }: VideoLscModalProps) => {
   const [abierto, setAbierto] = useState(true);
   const [reproduciendo, setReproduciendo] = useState(true);
 
@@ -65,14 +66,16 @@ export const VideoLscModal = ({ videoSrc }: VideoLscModalProps) => {
 
         <Video
           ref={videoRef}
-          src={videoSrc}
           autoPlay
           loop
           muted
           playsInline
           onPlay={() => setReproduciendo(true)}
           onPause={() => setReproduciendo(false)}
-        />
+        >
+          {videoSrcMobile && <source media="(max-width: 639px)" src={videoSrcMobile} type="video/mp4" />}
+          <source src={videoSrc} type="video/mp4" />
+        </Video>
 
         <Controles>
           <ControlBoton
@@ -158,7 +161,8 @@ const ModalContenedor = styled.div`
 const Video = styled.video`
   width: 100%;
   height: auto;
-
+  max-height: min(42vh, 360px);
+  object-fit: contain;
   display: block;
 `;
 
@@ -222,9 +226,8 @@ const Controles = styled.div`
 ========================= */
 
 const ControlBoton = styled.button`
-  background: none;
-
-  color: #f6e9c7;
+  background: #f4a009;
+  color: #160e16;
 
   border: 2px solid #f4a009;
 
@@ -237,8 +240,9 @@ const ControlBoton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: #f4a009;
+    background: #f6e9c7;
   }
+  &:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 2px; }
 
   @media ${device.tablet} {
     padding: 8px 12px;
@@ -264,11 +268,9 @@ const BotonReabrir = styled.button`
   align-items: center;
   justify-content: center;
 
-  background: #11111104;
-
-  color: #f6e9c7;
-
-  border: 2px solid #fafaf800;
+  background: #f4a009;
+  color: #160e16;
+  border: 2px solid #f6e9c7;
 
   border-radius: 50%;
 
@@ -283,11 +285,12 @@ const BotonReabrir = styled.button`
     transform 0.2s ease;
 
   &:hover {
-    background: #f4a009;
+    background: #f6e9c7;
     color: #060606;
 
     transform: scale(1.05);
   }
+  &:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 3px; }
 
   @media (max-width: 639px) {
     top: 84px;

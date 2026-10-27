@@ -24,7 +24,7 @@ test("map modal is keyboard-addressable as a dialog", async () => {
   assert.match(modal, /aria-modal="true"/);
   assert.match(modal, /createPortal\(/);
   assert.match(modal, /document\.body/);
-  assert.match(modal, /88dvh/);
+  assert.match(modal, /max-height:\s*calc\(100dvh - 2rem\)/);
 });
 
 test("desktop uses the custom hand cursor without affecting touch devices", async () => {
@@ -37,12 +37,15 @@ test("desktop uses the custom hand cursor without affecting touch devices", asyn
   assert.match(app, /<CustomCursor/);
 });
 
-test("game section shows its images without pending-status copy or a false video preview", async () => {
+test("game section shows its images with an honest store reference and no false video preview", async () => {
   const game = await source("src/components/Videojuego.tsx");
   assert.match(game, /capturaMenu/);
   assert.match(game, /capturaEncuentro/);
   assert.match(game, /capturaAcertijo/);
-  assert.doesNotMatch(game, /En desarrollo|Próximamente|pendiente|puede cambiar|VideoSlot|Video de avance/);
+  assert.match(game, /Próximamente en<\/small><strong>Google Play/);
+  assert.match(game, /Próximamente en<\/small><strong>App Store/);
+  assert.equal((game.match(/type="button" disabled/g) ?? []).length, 2);
+  assert.doesNotMatch(game, /En desarrollo|pendiente|puede cambiar|VideoSlot|Video de avance/);
   assert.doesNotMatch(game, /<video\b|game-demo\.mp4|onClick=/);
 });
 
@@ -59,9 +62,9 @@ test("team roster is reachable from the page and navigation", async () => {
   assert.match(menu, /\["Equipo", "#Equipo"\]/);
 });
 
-test("film shows its cover without a coming-soon trailer dialog", async () => {
+test("film shows its original cover without a coming-soon trailer dialog", async () => {
   const film = await source("src/components/Cortometraje.tsx");
   assert.match(film, /portadaTrailler/);
-  assert.match(film, /alt="Portada del cortometraje Umbrío"/);
+  assert.match(film, /alt="Portada del cortometraje Umbrío/);
   assert.doesNotMatch(film, /Próximamente|role="dialog"|aria-modal="true"|Trailer\.mp4|<source\b/);
 });

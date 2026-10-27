@@ -2,11 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { XIcon } from "lucide-react";
-
-import mapaTunja from "../assets/img/mapaTunja.png";
+import mapaTunja from "../assets/img/mapaTunja.webp";
+import gem from "../assets/img/pin.webp";
 import { lugares } from "../data/mapaData";
-import pin from "../assets/img/pin.webp";
-import { device } from "../pantallas/breakpoints";
 
 interface ModalMapaProps {
   open: boolean;
@@ -14,102 +12,107 @@ interface ModalMapaProps {
 }
 
 export const ModalMapa = ({ open, onClose }: ModalMapaProps) => {
-  const [activo, setActivo] = useState<number | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [activo, setActivo] = useState(lugares[0].id);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
-
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    closeButtonRef.current?.focus();
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
+    closeRef.current?.focus();
+    return () => { document.body.style.overflow = previousOverflow; };
   }, [open]);
 
   if (!open) return null;
+  const lugar = lugares.find((item) => item.id === activo) ?? lugares[0];
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Escape") onClose();
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape") { onClose(); return; }
+    if (event.key !== "Tab") return;
+    const focusable = dialogRef.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)');
+    if (!focusable?.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   };
 
   return createPortal(
-    <Overlay onClick={onClose} onKeyDown={handleKeyDown}>
-      <Modal role="dialog" aria-modal="true" aria-labelledby="mapa-title" tabIndex={-1} onClick={(event) => event.stopPropagation()}>
-        <VisuallyHidden id="mapa-title">Mapa interactivo de locaciones de Tunja</VisuallyHidden>
-        <Cerrar ref={closeButtonRef} type="button" aria-label="Cerrar mapa" onClick={onClose}><XIcon size={26} /></Cerrar>
-        <MapaWrapper onClick={() => setActivo(null)}>
-          <Mapa src={mapaTunja} alt="Mapa de locaciones de Tunja" />
-          {lugares.map((lugar) => {
-            const isActive = activo === lugar.id;
-            return <Pin key={lugar.id} type="button" aria-label={`Ver ${lugar.nombre}`} aria-pressed={isActive} onClick={(event) => {
-              event.stopPropagation();
-              setActivo(lugar.id);
-            }} style={{ top: lugar.top, left: lugar.left }}>
-              <Tooltip $visible={isActive}>
-                <img src={lugar.imagen} alt="" />
-                <h4>{lugar.nombre}</h4>
-              </Tooltip>
-            </Pin>;
-          })}
-        </MapaWrapper>
-      </Modal>
+    <Overlay onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+      <Dialog ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="mapa-title" onKeyDown={onKeyDown}>
+        <Header>
+          <div><span>Explora la ciudad</span><h2 id="mapa-title">Mapa de Tunja</h2></div>
+          <Close ref={closeRef} type="button" aria-label="Cerrar mapa" onClick={onClose}><XIcon aria-hidden="true" /></Close>
+        </Header>
+        <MapStage>
+          <MapImage src={mapaTunja} alt="Mapa ilustrado de Tunja" />
+          {lugares.map((item) => <Gem key={item.id} type="button"
+            aria-label={`Ver ${item.nombre} en el mapa`}
+            aria-pressed={item.id === activo}
+            onClick={() => setActivo(item.id)}
+            style={{ top: item.top, left: item.left }} />)}
+        </MapStage>
+        <PlaceList aria-label="Locaciones del mapa">
+          {lugares.map((item) => <button key={item.id} type="button" aria-pressed={item.id === activo}
+            onClick={() => setActivo(item.id)}>{item.nombre}</button>)}
+        </PlaceList>
+        <PlaceDetail>
+          <img src={lugar.imagen} alt={`Vista de ${lugar.nombre}`} />
+          <div><span>Locación seleccionada</span><h3>{lugar.nombre}</h3></div>
+        </PlaceDetail>
+      </Dialog>
     </Overlay>,
     document.body,
   );
 };
 
 const Overlay = styled.div`
-  position: fixed; inset: 0; display: grid; place-items: center; overflow: auto; padding: 1rem; box-sizing: border-box;
-  background: #011740; z-index: 900;
+  position: fixed; inset: 0; z-index: 5000; display: grid; place-items: center;
+  overflow-y: auto; padding: 1rem; background: #070710e8;
 `;
-
-const Modal = styled.div`
-  position: relative;
-  width: min(calc(100vw - 2rem), calc(88dvh * 1.77778), 1600px);
-  &:focus { outline: none; }
+const Dialog = styled.div`
+  box-sizing: border-box; width: min(1100px, 100%); max-height: calc(100dvh - 2rem);
+  overflow-y: auto; padding: clamp(1rem, 2.5vw, 2rem);
+  border: 1px solid #9c7c54; border-radius: 10px; color: #f6e9d2;
+  background: #18101c; box-shadow: 0 25px 70px #000b;
 `;
-
-const MapaWrapper = styled.div`
-  position: relative; width: 100%; aspect-ratio: 16 / 9;
+const Header = styled.div`
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem;
+  span { color: #7bd8d1; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; }
+  h2 { margin: .3rem 0 0; text-align: left; font-size: clamp(2rem, 4vw, 3.5rem); }
 `;
-
-const Mapa = styled.img`
-  display: block; width: 100%; height: 100%; object-fit: contain;
+const Close = styled.button`
+  display: grid; place-items: center; flex: none; width: 44px; height: 44px;
+  border: 1px solid #f4a009; border-radius: 50%; color: #f4a009; background: #211526;
+  &:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 3px; }
 `;
-
-const Pin = styled.button`
-  position: absolute; width: 24px; height: 24px; padding: 0; border: 0; background-color: transparent;
-  background-image: url(${pin}); background-size: contain; background-repeat: no-repeat;
-  transform: translate(-50%, -100%); z-index: 20; transition: transform .3s ease;
-  &:hover, &:focus-visible { transform: translate(-50%, -110%) scale(1.1); outline: none; }
-  &:focus-visible { filter: drop-shadow(0 0 5px #f4a009); }
-  @media ${device.tablet} { width: 26px; height: 26px; }
-  @media ${device.laptop} { width: 28px; height: 28px; }
-  @media ${device.desktop} { width: 30px; height: 30px; }
+const MapStage = styled.div`
+  position: relative; width: min(100%, 81.5dvh); margin: 0 auto;
 `;
-
-const Tooltip = styled.div<{ $visible: boolean }>`
-  position: absolute; bottom: 120%; left: 50%; width: 100px; padding: 5px;
-  transform: translateX(-50%) scale(${({ $visible }) => $visible ? 1 : 0});
-  opacity: ${({ $visible }) => $visible ? 1 : 0}; pointer-events: none;
-  background: #011740; color: #f6e9c7; border-radius: 6px; text-align: center; transition: all .3s ease;
-  img { width: 100%; height: 60px; object-fit: cover; border-radius: 4px; }
-  h4 { margin: 0; font-size: .6rem; }
-  @media ${device.tablet} { width: 120px; img { height: 70px; } h4 { font-size: .7rem; } }
-  @media ${device.laptop} { width: 140px; img { height: 80px; } h4 { font-size: .8rem; } }
+const MapImage = styled.img`
+  display: block; width: 100%; height: auto; background: #261b15;
 `;
-
-const Cerrar = styled.button`
-  position: absolute; top: 10px; right: 20px; z-index: 500; width: 45px; height: 45px;
-  display: flex; align-items: center; justify-content: center; border: none; border-radius: 50%;
-  color: #f6e9c7; background-color: #8c9eb1; transition: all .2s ease;
-  &:hover, &:focus-visible { background-color: #f4a009; color: #f6e9c7; transform: scale(1.1); }
+const Gem = styled.button`
+  position: absolute; width: 44px; height: 44px; padding: 0; border: 0;
+  transform: translate(-50%, -50%); cursor: pointer;
+  background: url(${gem}) center / 32px auto no-repeat;
+  filter: drop-shadow(0 2px 4px #07101c);
+  transition: filter .2s ease, scale .2s ease;
+  &:hover, &[aria-pressed="true"] { filter: drop-shadow(0 0 9px #60f5ff); scale: 1.15; }
+  &:focus-visible { outline: 2px solid #f4a009; outline-offset: 2px; border-radius: 50%; }
 `;
-
-const VisuallyHidden = styled.h2`
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+const PlaceList = styled.div`
+  display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0;
+  button { min-height: 42px; padding: .5rem .75rem; border: 1px solid #ad956f; border-radius: 4px; color: #f6e9d2; background: #2c2030; font: .8rem var(--heading); }
+  button[aria-pressed="true"], button:hover { color: #1b1017; background: #f4a009; }
+  button:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 2px; }
+`;
+const PlaceDetail = styled.div`
+  display: flex; align-items: center; gap: 1rem; padding: .75rem;
+  border: 1px solid #655043; background: #221720;
+  img { display: block; width: 130px; height: 90px; object-fit: cover; }
+  span { color: #7bd8d1; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; }
+  h3 { margin: .3rem 0 0; color: #f4a009; font-size: clamp(1rem, 2vw, 1.5rem); }
+  @media (max-width: 480px) { img { width: 86px; height: 72px; } }
 `;

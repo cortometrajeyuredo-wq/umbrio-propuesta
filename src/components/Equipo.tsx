@@ -132,9 +132,9 @@ const Card = styled.article<{ $tone: number }>`
   min-height: 420px;
   padding: 1.5rem 1rem;
   border: 1px solid ${({ $tone }) => ["#746259", "#426e6b", "#775579"][$tone]};
-  border-radius: 12px;
-  background: ${({ $tone }) => ["linear-gradient(160deg, #37241f, #1b1116)", "linear-gradient(160deg, #203b3a, #101b24)", "linear-gradient(160deg, #392442, #191124)"][$tone]};
-  box-shadow: 0 20px 35px rgba(0, 0, 0, .25);
+  border-radius: 5px;
+  background: ${({ $tone }) => ["linear-gradient(160deg, #43382f, #19151a)", "linear-gradient(160deg, #363a38, #14191b)", "linear-gradient(160deg, #413642, #19141e)"][$tone]};
+  box-shadow: inset 0 0 0 4px #211b1a, 0 20px 35px rgba(0, 0, 0, .25);
   transition: transform .25s ease, border-color .25s ease;
 
   &:hover, &:focus-within { transform: translateY(-4px); border-color: #f4a009; }

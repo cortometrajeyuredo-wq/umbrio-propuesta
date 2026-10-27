@@ -9,6 +9,7 @@ import { Artbook } from "./components/Artbook";
 import { Equipo } from "./components/Equipo";
 import { useSectionReveal } from "./hooks/useSectionReveal";
 import { CustomCursor } from "./components/CustomCursor";
+import { BackToTop } from "./components/BackToTop";
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
   return (
     <>
       <CustomCursor />
+      <BackToTop />
       <Hero />
       <Cortometraje />
       <Videojuego />

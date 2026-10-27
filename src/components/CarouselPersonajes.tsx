@@ -28,10 +28,11 @@ export const CarouselPersonajes = () => {
           <div>
             <h4>{personaje.nombre}</h4>
             <p>{personaje.descripcion}</p>
+            <small>{personaje.tipoArte === "3D" ? "Vista del personaje en 3D" : "Ilustración del personaje en 2D"}</small>
           </div>
         </Description>
         <ArtStage>
-          <Image src={personaje.personajeGrande} alt={`Ilustración de ${personaje.nombre}`} />
+          <Image src={personaje.personajeGrande} alt={`${personaje.tipoArte === "3D" ? "Render 3D" : "Ilustración 2D"} de ${personaje.nombre}`} />
         </ArtStage>
       </ContentContainer>
     </CarouselLayout>
@@ -50,7 +51,7 @@ const artReveal = keyframes`
 
 // :::::::::::::::: ================== :::::::::::::::
 const CarouselLayout = styled.div`
-  width: min(100%, 1100px);
+  width: min(100%, 1250px);
 `;
 
 const ButtonContainer = styled.div`
@@ -104,9 +105,9 @@ const Button = styled.button<{ $activo: boolean; $img: string }>`
 
 const ContentContainer = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 430px);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
   align-items: center;
-  gap: clamp(20px, 5vw, 72px);
+  gap: clamp(20px, 3vw, 42px);
   width: 100%;
   margin: 0 auto;
 
@@ -117,6 +118,8 @@ const ContentContainer = styled.div`
 `;
 
 const Description = styled.div`
+  grid-column: 2;
+  grid-row: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -146,14 +149,19 @@ const Description = styled.div`
   }
 
   @media (max-width: 760px) {
+    grid-column: 1;
+    grid-row: 2;
     text-align: center;
-    min-height: 300px;
+    min-height: 0;
   }
+  small { display: block; margin-top: 1rem; color: #e2c495; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
 `;
 
 const ArtStage = styled.div`
+  grid-column: 1;
+  grid-row: 1;
   width: 100%;
-  height: clamp(500px, 68vh, 680px);
+  height: clamp(500px, 72vh, 720px);
 
   @media (max-width: 760px) {
     height: clamp(320px, 60vh, 520px);

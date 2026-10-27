@@ -123,9 +123,10 @@ const ArchiveLink = styled.a`
   margin-top: 2.5rem;
   padding: .85rem 1.4rem;
   border: 1px solid #f4a009;
-  border-radius: 999px;
+  border-radius: 4px;
   color: #f6e9d2;
-  background: rgba(8, 6, 13, .76);
+  background: linear-gradient(135deg, #3d352e, #211b23);
+  box-shadow: inset 0 0 0 3px #241c1a, 5px 6px 0 #09070d;
   font-family: var(--heading);
   font-size: clamp(1rem, 2vw, 1.25rem);
   text-decoration: none;

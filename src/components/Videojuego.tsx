@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Apple, Play } from "lucide-react";
 
 import fondo from "../assets/img/fondoCorto.webp";
 import capturaMenu from "../assets/game/captura-menu.png";
@@ -20,6 +21,16 @@ export const Videojuego = () => (
           <Concept><Number>02</Number><span>Descubre pistas y relatos</span></Concept>
           <Concept><Number>03</Number><span>Decide cómo continúa la historia</span></Concept>
         </Concepts>
+        <StoreButtons aria-label="Tiendas del videojuego Umbrío">
+          <button type="button" disabled aria-label="Google Play: próximamente">
+            <Play aria-hidden="true" fill="currentColor" />
+            <span><small>Próximamente en</small><strong>Google Play</strong></span>
+          </button>
+          <button type="button" disabled aria-label="App Store: próximamente">
+            <Apple aria-hidden="true" fill="currentColor" />
+            <span><small>Próximamente en</small><strong>App Store</strong></span>
+          </button>
+        </StoreButtons>
       </Intro>
 
       <MediaArea>
@@ -153,6 +164,21 @@ const Number = styled.span`
 
 const MediaArea = styled.div`min-width: 0;`;
 
+const StoreButtons = styled.div`
+  display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem;
+  button {
+    display: inline-flex; align-items: center; gap: .8rem; min-width: 180px; min-height: 64px;
+    padding: .65rem 1rem; border: 1px solid #b58b55; border-radius: 7px;
+    color: #f6e9d2; background: linear-gradient(140deg, #243042, #151b2b 72%);
+    box-shadow: inset 0 0 0 2px #384052, 0 10px 30px #0007;
+    text-align: left; cursor: not-allowed; opacity: 1;
+  }
+  svg { width: 29px; height: 29px; flex: none; color: #e7ac52; }
+  span { display: grid; gap: .15rem; }
+  small { color: #85d5d5; font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; }
+  strong { font: 1rem var(--heading); white-space: nowrap; }
+`;
+
 const Gallery = styled.div`width: 100%;`;
 
 const GalleryHeading = styled.div`
@@ -172,7 +198,7 @@ const GalleryGrid = styled.div`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(.5rem, 1.2vw, 1rem);
 
-  figure { min-width: 0; margin: 0; }
+  figure { min-width: 0; margin: 0; padding: .45rem; border: 2px solid #827363; background: linear-gradient(140deg, #403833, #19171e 70%); box-shadow: inset 0 0 0 2px #201b1c, 0 14px 25px #0008; }
 
   img {
     display: block;

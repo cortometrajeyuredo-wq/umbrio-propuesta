@@ -46,12 +46,13 @@ const CarruselContenedor = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
+    background: radial-gradient(circle at 65% 30%, #34283a, #100b18 58%, #07070b);
 `;
 
 const BotonBrujula = styled.button`
   position: absolute;
-  bottom: 20px;   
-  left: 20px;
+  bottom: 24px;
+  left: clamp(1.5rem, 4vw, 4rem);
 
   border: none;
   background: none;

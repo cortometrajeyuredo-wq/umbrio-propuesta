@@ -17,13 +17,13 @@ test('public story contains no placeholder copy', async () => {
   assert.match(characters, /Noah/i);
 });
 
-test('landing page keeps the supplied sketch while creation gallery is hidden', async () => {
+test('landing page features Sombrerón while creation gallery is hidden', async () => {
   const [hero, app, menu] = await Promise.all([
     source('src/components/Hero.tsx'),
     source('src/App.tsx'),
     source('src/components/Menu.tsx'),
   ]);
-  assert.match(hero, /banner-boceto\.jpeg/);
+  assert.match(hero, /sombreron_pose_espalda\.webp/);
   assert.doesNotMatch(hero, /Imagen en desarrollo|Boceto del banner principal|arte en desarrollo/);
   assert.doesNotMatch(app, /<Galeria|components\/Galeria/);
   assert.doesNotMatch(menu, /#Galeria/);

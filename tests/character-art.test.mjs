@@ -13,20 +13,23 @@ test('the refreshed characters use transparent PNG cutouts, not framed cards', a
   const module = await import(`data:text/javascript;base64,${Buffer.from(runnable).toString('base64')}`);
   const byName = new Map(module.personajes.map((personaje) => [personaje.nombre, personaje]));
 
-  assert.equal(byName.size, 6);
+  assert.equal(byName.size, 7);
   for (const [name, file] of [
     ['NOAH', 'comp_noah.png'],
-    ['SIMON', 'comp_simon.png'],
+    ['SIMÓN', 'comp_simon.png'],
     ['ESPANTO DEL PANÓPTICO', 'comp_espanto.png'],
   ]) {
     const character = byName.get(name);
     assert.ok(character, `${name} remains in the carousel`);
     assert.equal(character.personajeGrande, `/assets/${file}`);
   }
-  assert.equal(byName.get('EL SOMBRERÓN').personajeGrande, '/assets/sombreron2.png');
+  assert.equal(byName.get('EL SOMBRERÓN').personajeGrande, '/assets/sombreron-render-transparent.png');
   for (const name of ['MANO PELUDA', 'PERRO DE SAN FRANCISCO']) {
     assert.ok(byName.has(name), `${name} remains in the carousel`);
   }
+  assert.equal(byName.get('MANOS DE LA PARED').tipoArte, '2D');
+  assert.equal(byName.get('MANO PELUDA').tipoArte, '2D');
+  assert.equal(byName.get('SIMÓN').miniatura, '/assets/simon.webp');
   for (const character of byName.values()) {
     assert.doesNotMatch(character.personajeGrande, /carta-/);
   }
@@ -35,7 +38,7 @@ test('the refreshed characters use transparent PNG cutouts, not framed cards', a
 test('transparent character art is fitted within the character panel instead of cropped', async () => {
   const component = await readFile(new URL('../src/components/CarouselPersonajes.tsx', import.meta.url), 'utf8');
   assert.match(component, /object-fit:\s*contain/);
-  assert.match(component, /const CarouselLayout = styled\.div`[\s\S]*?width:\s*min\(100%,\s*1100px\)/);
+  assert.match(component, /const CarouselLayout = styled\.div`[\s\S]*?width:\s*min\(100%,\s*1250px\)/);
   assert.match(component, /const ArtStage = styled\.div`[\s\S]*?height:\s*clamp\(/);
   assert.match(component, /<ArtStage>\s*<Image[\s\S]*?<\/ArtStage>/);
   assert.match(component, /const Image = styled\.img`[\s\S]*?height:\s*100%/);

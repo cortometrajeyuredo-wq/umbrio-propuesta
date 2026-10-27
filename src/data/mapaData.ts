@@ -6,9 +6,9 @@ import biblioteca from "../assets/img-tunja/Biblioteca.webp";
 export interface Lugar {
   id: number;
   nombre: string;
+  imagen: string;
   top: string;
   left: string;
-  imagen: string;
 }
 
 export const lugares: Lugar[] = [
@@ -38,6 +38,6 @@ export const lugares: Lugar[] = [
     nombre: "Biblioteca",
     imagen: biblioteca,
     top: "32%",
-    left:"43%",
+    left: "43%",
   },
 ];

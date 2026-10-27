@@ -2,13 +2,13 @@ import styled from "styled-components";
 import umbrioLogo from "../assets/brand/umbrio-logo.png";
 import senaLogo from "../assets/brand/logo-sena.webp";
 import colombiaMagicaLogo from "../assets/brand/logo-colombia-magica.webp";
-import footerSketch from "../assets/img/footer-boceto.jpeg";
+import closingIllustration from "../assets/img/banner-boceto.jpeg";
 
 export const Footer = () => {
   return (
     <FooterSection data-reveal>
       <ClosingFrame>
-        <img src={footerSketch} alt="Personajes de Umbrío explorando la ciudad" loading="lazy" />
+        <img src={closingIllustration} alt="Noah y Simón frente a las leyendas de Umbrío" loading="lazy" />
       </ClosingFrame>
       <ClosingCopy><span>La exploración continúa</span><p>Hay historias que siguen vivas después de cerrar el libro.</p></ClosingCopy>
       <FooterGlow aria-hidden="true" />
@@ -39,7 +39,7 @@ const ClosingFrame = styled.div`
   position: relative;
   width: 100%;
   background: #09030d;
-  img { display: block; width: 100%; height: auto; filter: grayscale(1) brightness(.74) contrast(1.06); }
+  img { display: block; width: 100%; height: auto; }
   &::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, #09030d 0%, transparent 10%, transparent 80%, #09030d 100%); }
 `;
 
@@ -59,7 +59,7 @@ const FooterSection = styled.footer`
   overflow: hidden;
   padding: 0 0 1.1rem;
   color: #f6e9c7;
-  background: #09030d;
+  background: radial-gradient(circle at 50% 0%, #2b2140, #09030d 68%);
 `;
 
 const FooterGlow = styled.div`

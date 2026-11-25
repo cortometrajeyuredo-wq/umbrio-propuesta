@@ -47,7 +47,8 @@ const FilmInner = styled.div`
 `;
 
 const Player = styled.div`
-  width: min(100%, calc(60svh * 16 / 9));
+  /* Alto del video = alto de pantalla menos título, texto y nota (~30rem), para que la sección quepa entera. */
+  width: min(100%, calc(max(100svh - 30rem, 14rem) * 16 / 9));
   margin: 0 auto;
   overflow: hidden;
   border: 2px solid var(--violet);

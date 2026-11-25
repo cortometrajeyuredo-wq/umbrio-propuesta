@@ -40,9 +40,9 @@ export const Videojuego = () => (
         <Gallery aria-label="Imágenes del videojuego">
           <GalleryHeading>Dentro del juego</GalleryHeading>
           <GalleryGrid>
-            <figure><img src={capturaMenu} alt="Pantalla inicial del juego Umbrío" loading="lazy" width={540} height={960} /><figcaption>Inicio</figcaption></figure>
-            <figure><img src={capturaEncuentro} alt="Encuentro con un espanto en el juego" loading="lazy" width={540} height={960} /><figcaption>Encuentro</figcaption></figure>
-            <figure><img src={capturaAcertijo} alt="Acertijo durante la exploración" loading="lazy" width={540} height={960} /><figcaption>Acertijo</figcaption></figure>
+            <figure><img src={capturaMenu} alt="Pantalla inicial del juego Umbrío" loading="lazy" width={400} height={874} /><figcaption>Inicio</figcaption></figure>
+            <figure><img src={capturaEncuentro} alt="Encuentro con un espanto en el juego" loading="lazy" width={400} height={874} /><figcaption>Encuentro</figcaption></figure>
+            <figure><img src={capturaAcertijo} alt="Acertijo durante la exploración" loading="lazy" width={400} height={874} /><figcaption>Acertijo</figcaption></figure>
           </GalleryGrid>
         </Gallery>
       </MediaArea>
@@ -114,9 +114,9 @@ const Inner = styled.div`
 
 const Intro = styled.div`
   h2 {
-    margin: 1.2rem 0 1.4rem;
+    margin: 1rem 0 1.1rem;
     color: var(--cream);
-    font-size: clamp(2.6rem, min(5vw, 8.5vh), 5.4rem);
+    font-size: clamp(2.4rem, min(4.2vw, 6.5vh), 4.8rem);
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: -.025em;
@@ -138,7 +138,7 @@ const Kicker = styled.p`
 
 const Lead = styled.p`
   max-width: 34rem;
-  margin: 0 0 2.5rem;
+  margin: 0 0 clamp(1.2rem, 3vh, 2.5rem);
   color: var(--cream);
   font-size: clamp(1rem, 1.35vw, 1.18rem);
   line-height: 1.65;
@@ -156,7 +156,7 @@ const Concept = styled.li`
   display: flex;
   gap: 1.3rem;
   align-items: baseline;
-  padding: .9rem 0;
+  padding: clamp(.55rem, 1.4vh, .9rem) 0;
   border-bottom: 1px solid rgba(245, 234, 212, .25);
   color: #f4ead7;
   font-size: 1rem;
@@ -170,17 +170,17 @@ const Number = styled.span`
 const MediaArea = styled.div`min-width: 0;`;
 
 const StoreButtons = styled.div`
-  display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem;
+  display: flex; flex-wrap: wrap; gap: .8rem; margin-top: clamp(1.2rem, 3vh, 2rem);
   button {
-    display: inline-flex; align-items: center; gap: .8rem; min-width: 180px; min-height: 64px;
-    padding: .65rem 1rem; border: 1px solid var(--lavender); border-radius: 7px;
+    display: inline-flex; align-items: center; gap: .7rem; min-width: 160px; min-height: 64px;
+    padding: .65rem .8rem; border: 1px solid var(--lavender); border-radius: 7px;
     color: #f6e9d2; background: var(--navy);
     box-shadow: inset 0 0 0 2px #384052, 0 10px 30px #0007;
     text-align: left; cursor: not-allowed; opacity: 1;
   }
   svg { width: 29px; height: 29px; flex: none; color: var(--cyan); }
   span { display: grid; gap: .15rem; }
-  small { color: var(--mauve); font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; }
+  small { color: var(--mauve); font-size: .7rem; letter-spacing: .02em; text-transform: uppercase; }
   strong { font-size: 1.05rem; font-weight: 400; white-space: nowrap; }
 `;
 
@@ -203,12 +203,13 @@ const GalleryGrid = styled.div`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(.5rem, 1.2vw, 1rem);
 
-  figure { min-width: 0; margin: 0; padding: .45rem; border: 2px solid #827363; background: linear-gradient(140deg, #403833, #19171e 70%); box-shadow: inset 0 0 0 2px #201b1c, 0 14px 25px #0008; }
+  figure { min-width: 0; max-width: calc(min(52svh, 500px) * 400 / 874 + 1.1rem); margin: 0; padding: .45rem; border: 2px solid #827363; background: linear-gradient(140deg, #403833, #19171e 70%); box-shadow: inset 0 0 0 2px #201b1c, 0 14px 25px #0008; }
 
   img {
     display: block;
     width: 100%;
-    height: min(52svh, 500px);
+    height: auto;
+    aspect-ratio: 400 / 874;
     object-fit: cover;
     object-position: center;
     border: 1px solid rgba(245, 234, 212, .24);

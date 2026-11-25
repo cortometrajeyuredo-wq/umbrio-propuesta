@@ -101,7 +101,7 @@ test('preproduction has a sticky chapter bar, reels, in-page lightbox and storyb
   assert.match(page, /aria-roledescription="carrusel"/);
   assert.match(page, /role="dialog" aria-modal="true"/);
   assert.doesNotMatch(page, /href=\{`\/preproduccion\/\$\{item\.id\}\.jpg`\}/);
-  assert.match(page, /-linea\.webp/);
+  assert.match(page, /-blanco/);
   assert.match(css, /\.archive-section\.archive-section-bocetos \{ background: #120a1c var\(--archive-texture\)/);
   const storyboard = (await readdir(new URL('../public/preproduccion/storyboard/', import.meta.url))).filter((name) => name.endsWith('.webp'));
   assert.equal(storyboard.length, 109);

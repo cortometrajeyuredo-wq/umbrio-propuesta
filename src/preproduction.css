@@ -27,12 +27,12 @@
 .archive-chapters a:hover { color: var(--cyan); border-bottom-color: var(--cyan); }
 .archive-chapters .archive-chapters-back { margin-left: auto; color: var(--gold); }
 
-.archive-section, .archive-outro { padding: clamp(4rem, 7vw, 6.5rem) clamp(1.3rem, 6vw, 6rem); scroll-margin-top: 64px; }
+.archive-section { padding: clamp(4rem, 7vw, 6.5rem) clamp(1.3rem, 6vw, 6rem); scroll-margin-top: 64px; }
 .archive-section { border-top: 1px solid var(--indigo); }
 .archive-section:nth-of-type(odd) { background: #0e0a1d; }
 .archive-section-heading { max-width: 760px; }
-.archive-section-heading h2, .archive-outro h2 { margin: .9rem 0; font-size: clamp(2.5rem, 5.4vw, 5rem); font-weight: 400; line-height: 1.05; text-align: left; text-transform: none; color: var(--cream); }
-.archive-section-heading > p, .archive-outro p { max-width: 580px; font-size: 1.1rem; line-height: 1.6; }
+.archive-section-heading h2 { margin: .9rem 0; font-size: clamp(2.5rem, 5.4vw, 5rem); font-weight: 400; line-height: 1.05; text-align: left; text-transform: none; color: var(--cream); }
+.archive-section-heading > p { max-width: 580px; font-size: 1.1rem; line-height: 1.6; }
 
 .archive-spoiler { display: flex; gap: 1rem; max-width: 640px; margin-top: 2rem; padding: 1.4rem; border: 2px solid var(--violet); border-radius: 6px; background: rgba(148, 49, 192, .12); }
 .archive-spoiler-icon { display: grid; flex: none; place-items: center; width: 2.2rem; height: 2.2rem; border: 2px solid var(--gold); border-radius: 50%; color: var(--gold); }
@@ -41,8 +41,8 @@
 .archive-spoiler-button { min-height: 48px; padding: .6rem 1.3rem; border: 2px solid var(--gold); border-radius: 4px; color: #150b1a; background: var(--gold); font-size: 1.05rem; }
 .archive-spoiler-button:hover { background: #ffb733; }
 .archive-pdf { margin: 1.2rem 0 0; }
-.archive-pdf a, .archive-outro a { display: inline-flex; align-items: center; min-height: 44px; border-bottom: 2px solid var(--aqua); text-decoration: none; }
-.archive-pdf a:hover, .archive-outro a:hover { color: var(--cyan); }
+.archive-pdf a { display: inline-flex; align-items: center; min-height: 44px; border-bottom: 2px solid var(--aqua); text-decoration: none; }
+.archive-pdf a:hover { color: var(--cyan); }
 
 /* Carrete */
 .archive-reel { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .5rem; margin-top: 2.4rem; }
@@ -65,9 +65,6 @@
 /* Bocetos: la línea (webp transparente) se apoya sobre la textura. */
 .archive-section.archive-section-bocetos { background: #120a1c var(--archive-texture) center / cover; }
 
-.archive-outro { text-align: center; background: radial-gradient(circle at 50% 10%, var(--indigo), #0b0716 63%); }
-.archive-outro h2 { text-align: center; }
-.archive-outro p { margin: 0 auto 1.6rem; }
 
 .archive-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.6rem clamp(1.3rem, 8vw, 8rem); border-top: 1px solid var(--indigo); color: var(--mauve); font-size: .95rem; }
 .archive-footer a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; border-bottom: 2px solid var(--aqua); }

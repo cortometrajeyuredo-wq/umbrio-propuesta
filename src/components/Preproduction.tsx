@@ -15,11 +15,12 @@ type Enlarged = { src: string; alt: string; title: string };
 
 const items = archive as ArchiveItem[];
 
-// Los bocetos usan la versión solo línea (scripts/export_sketch_lines.py): sin el papel blanco del escaneo.
+// Bocetos provisionales con el papel en blanco (scripts/export_sketch_white.py); las versiones definitivas llegan después.
 const imageUrl = (item: ArchiveItem, thumb: boolean) =>
-  item.section === 'bocetos'
-    ? `/preproduccion/${item.id}${thumb ? '-thumb' : ''}-linea.webp`
-    : `/preproduccion/${item.id}${thumb ? '-thumb' : ''}.jpg`;
+  item.section === 'texturas'
+    // Texturas con fondo transparente (el PNG original), exportadas a WebP.
+    ? `/preproduccion/${item.id}${thumb ? '-thumb' : ''}.webp`
+    : `/preproduccion/${item.id}${thumb ? '-thumb' : ''}${item.section === 'bocetos' ? '-blanco' : ''}.jpg`;
 
 // Exportado con scripts/export_storyboard.py.
 const STORYBOARD_PAGE_COUNT = 109;
@@ -119,7 +120,7 @@ export const Preproduction = () => {
       <nav className="archive-chapters" aria-label="Etapas de preproducción">
         <a href="#storyboard">Storyboard</a>
         {chapters.map((chapter) => <a href={`#${chapter.id}`} key={chapter.id}>{chapter.label}</a>)}
-        <a href="#artbook">Artbook</a>
+        <a href="/#Artbook">Artbook</a>
         <a href="/#Making" className="archive-chapters-back">Volver a Making off</a>
       </nav>
 
@@ -174,13 +175,6 @@ export const Preproduction = () => {
           </Reel>
         </section>
       ))}
-
-      <section className="archive-outro" id="artbook" aria-labelledby="artbook-link-title">
-        <span className="archive-index">Epílogo · el universo reunido</span>
-        <h2 id="artbook-link-title">Todo en un libro.</h2>
-        <p>El artbook reúne el arte y el proceso visual de Umbrío.</p>
-        <a href="/#Artbook">Abrir el artbook</a>
-      </section>
 
       <footer className="archive-footer"><span>Umbrío · archivo visual</span><a href="/#Making">Volver a Making off</a></footer>
 

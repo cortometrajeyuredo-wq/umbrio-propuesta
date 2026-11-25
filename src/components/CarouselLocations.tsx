@@ -2,9 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import parchment from "../assets/img/pergamino1.webp";
+import roller from "../assets/img/rodillo-pergamino.webp";
 import { slides } from "../data/locationsData";
 
-const ROLL_MS = 320;
+// Cada fase (enrollar y desenrollar) dura lo mismo que en la referencia que eligió la profesora.
+const ROLL_MS = 800;
+const ROLL_EASE = "cubic-bezier(.7, 0, .3, 1)";
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -64,12 +67,16 @@ export const CarruselLocaciones = () => {
         </Visual>
         <Arrow type="button" onClick={() => move(1)} aria-label="Locación siguiente"><ChevronRight aria-hidden="true" /></Arrow>
       </ImagePanel>
-      <Scroll $rolled={rolled} aria-live="polite">
-        <StoryText $rolled={rolled}>
-          <Counter>{String(shown + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")} · {storyEra}</Counter>
-          <h3>{story.titulo}</h3>
-          <p>{story.descripcion}</p>
-        </StoryText>
+      <Scroll aria-live="polite">
+        <Paper $rolled={rolled}>
+          <StoryText $rolled={rolled}>
+            <Counter>{String(shown + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")} · {storyEra}</Counter>
+            <h3>{story.titulo}</h3>
+            <p>{story.descripcion}</p>
+          </StoryText>
+        </Paper>
+        <Roller $side="left" $rolled={rolled} aria-hidden="true" />
+        <Roller $side="right" $rolled={rolled} aria-hidden="true" />
       </Scroll>
     </Feature>
     <Hint>Usa las flechas o desliza para continuar</Hint>
@@ -123,32 +130,40 @@ const Era = styled.span<{ $ahora: boolean }>`
 `;
 
 /*
- * Pergamino: al cambiar de locación se enrolla hacia el centro (scaleX) y vuelve
- * a desenrollarse con el texto nuevo. Los bordes oscuros simulan los rodillos.
+ * Pergamino con dos rodillos: al cambiar de locación los rodillos se deslizan hasta
+ * el centro mientras la hoja se pliega (scaleX desde el centro), el texto cambia con
+ * la hoja cerrada y todo vuelve a abrirse. Misma curva para hoja y rodillos, así el
+ * borde del papel siempre queda oculto bajo su rodillo.
  */
-const Scroll = styled.div<{ $rolled: boolean }>`
-  position: relative;
-  display: grid; place-items: center; min-width: 0;
+const Scroll = styled.div`
+  --roller: clamp(40px, 4.2vw, 64px);
+  position: relative; display: flex; min-width: 0;
   min-height: clamp(360px, 54vh, 540px);
-  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(2.5rem, 6vw, 5.5rem); box-sizing: border-box;
+  @media (max-width: 900px) { min-height: 340px; }
+  @media (max-width: 600px) { min-height: 420px; }
+`;
+const Paper = styled.div<{ $rolled: boolean }>`
+  /* En el flujo (no absoluto) para que la hoja crezca si el texto es largo; los rodillos siguen su alto. */
+  flex: 1; min-width: 0; margin: clamp(14px, 2.2vw, 22px) calc(var(--roller) * .75);
+  display: grid; place-items: center;
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem); box-sizing: border-box;
   background: url(${parchment}) center / 100% 100% no-repeat;
   transform-origin: center;
-  transform: scaleX(${({ $rolled }) => ($rolled ? 0.06 : 1)});
-  transition: transform ${ROLL_MS}ms cubic-bezier(.55, 0, .45, 1);
+  transform: scaleX(${({ $rolled }) => ($rolled ? 0 : 1)});
+  transition: transform ${ROLL_MS}ms ${ROLL_EASE};
   filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .45));
-
-  &::before, &::after {
-    content: ""; position: absolute; top: 3%; bottom: 3%; width: 18px; border-radius: 9px;
-    background: linear-gradient(90deg, #5a3a1c, #c99a5b 45%, #5a3a1c);
-    opacity: ${({ $rolled }) => ($rolled ? 1 : 0)};
-    transition: opacity ${ROLL_MS / 2}ms ease;
-  }
-  &::before { left: -6px; }
-  &::after { right: -6px; }
-
-  @media (max-width: 900px) { min-height: 330px; }
-  @media (max-width: 600px) { min-height: 400px; padding: 2.5rem 2rem; }
-  @media (prefers-reduced-motion: reduce) { transition: none; &::before, &::after { transition: none; } }
+  /* La imagen tiene bordes rasgados arriba y abajo: el texto empieza y termina dentro de la hoja. */
+  @media (max-width: 600px) { padding: 3.6rem 1.2rem; }
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+`;
+const Roller = styled.span<{ $side: "left" | "right"; $rolled: boolean }>`
+  position: absolute; top: 0; bottom: 0; z-index: 2; width: var(--roller);
+  ${({ $side, $rolled }) => `${$side}: ${$rolled ? "calc(50% - var(--roller))" : "0"};`}
+  background: url(${roller}) center / 100% 100% no-repeat;
+  ${({ $side }) => ($side === "right" ? "transform: scaleX(-1);" : "")}
+  transition: left ${ROLL_MS}ms ${ROLL_EASE}, right ${ROLL_MS}ms ${ROLL_EASE};
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, .5));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
 `;
 const StoryText = styled.div<{ $rolled: boolean }>`
   width: 100%; max-width: 52ch; text-align: center; color: #2a1d26;

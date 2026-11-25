@@ -61,7 +61,8 @@ const ButtonContainer = styled.div`
   gap: clamp(10px, 1.4vw, 18px);
   justify-content: center;
   align-items: center;
-  margin: clamp(14px, 2.5vh, 26px) 0;
+  max-width: calc(100vw - 2 * var(--lsc-reserve));
+  margin: clamp(14px, 2.5vh, 26px) auto;
 `;
 
 const Button = styled.button<{ $activo: boolean; $img: string; $tono: string }>`
@@ -76,8 +77,8 @@ const Button = styled.button<{ $activo: boolean; $img: string; $tono: string }>`
   transition: transform .25s ease, border-color .25s ease;
 
   @media (min-width: 1024px) {
-    width: clamp(84px, min(7vw, 11vh), 108px);
-    height: clamp(84px, min(7vw, 11vh), 108px);
+    width: clamp(72px, min(7vw, 11vh), 108px);
+    height: clamp(72px, min(7vw, 11vh), 108px);
   }
 
   &::before {
@@ -129,7 +130,7 @@ const ArtStage = styled.div`
   grid-column: 1;
   grid-row: 1;
   width: 100%;
-  height: clamp(320px, calc(100svh - 330px), 680px);
+  height: clamp(240px, calc(100svh - 350px), 680px);
 
   @media (max-width: 760px) {
     height: clamp(300px, 52svh, 480px);

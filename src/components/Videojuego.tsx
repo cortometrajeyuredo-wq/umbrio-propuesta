@@ -63,7 +63,7 @@ const Section = styled.section`
   min-height: 100svh;
   display: grid;
   align-items: center;
-  padding: clamp(4.5rem, 9vh, 7rem) clamp(1.25rem, 5vw, 5rem) 2.5rem;
+  padding: clamp(3rem, 9vh, 7rem) clamp(1.25rem, 5vw, 5rem) clamp(1.25rem, 4vh, 2.5rem);
   color: #f5ead4;
   background: #090b0e;
 
@@ -117,7 +117,7 @@ const Inner = styled.div`
 
 const Intro = styled.div`
   h2 {
-    margin: 1rem 0 1.1rem;
+    margin: clamp(.6rem, 1.6vh, 1rem) 0 clamp(.7rem, 1.8vh, 1.1rem);
     color: var(--cream);
     font-size: clamp(2.4rem, min(4.2vw, 6.5vh), 4.8rem);
     font-weight: 400;
@@ -141,10 +141,10 @@ const Kicker = styled.p`
 
 const Lead = styled.p`
   max-width: 34rem;
-  margin: 0 0 clamp(1.2rem, 3vh, 2.5rem);
+  margin: 0 0 clamp(.8rem, 3vh, 2.5rem);
   color: var(--cream);
-  font-size: clamp(1rem, 1.35vw, 1.18rem);
-  line-height: 1.65;
+  font-size: clamp(1rem, min(1.35vw, 2.6vh), 1.18rem);
+  line-height: clamp(1.5, .9 + 1vh, 1.65);
 `;
 
 const Concepts = styled.ol`
@@ -159,7 +159,7 @@ const Concept = styled.li`
   display: flex;
   gap: 1.3rem;
   align-items: baseline;
-  padding: clamp(.55rem, 1.4vh, .9rem) 0;
+  padding: clamp(.3rem, 1.2vh, .9rem) 0;
   border-bottom: 1px solid rgba(245, 234, 212, .25);
   color: #f4ead7;
   font-size: 1rem;
@@ -173,9 +173,9 @@ const Number = styled.span`
 const MediaArea = styled.div`min-width: 0;`;
 
 const StoreButtons = styled.div`
-  display: flex; flex-wrap: wrap; gap: .8rem; margin-top: clamp(1.2rem, 3vh, 2rem);
+  display: flex; flex-wrap: wrap; gap: .8rem; margin-top: clamp(.8rem, 3vh, 2rem);
   button {
-    display: inline-flex; align-items: center; gap: .7rem; min-width: 160px; min-height: 64px;
+    display: inline-flex; align-items: center; gap: .7rem; min-width: 160px; min-height: clamp(52px, 9vh, 64px);
     padding: .65rem .8rem; border: 1px solid var(--lavender); border-radius: 7px;
     color: #f6e9d2; background: var(--navy);
     box-shadow: inset 0 0 0 2px #384052, 0 10px 30px #0007;
@@ -233,8 +233,8 @@ const FooterNote = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: clamp(1.5rem, 5vh, 3.5rem);
-  padding-top: 1.2rem;
+  margin-top: clamp(.6rem, 3.5vh, 3.5rem);
+  padding-top: clamp(.6rem, 1.8vh, 1.2rem);
   border-top: 1px solid rgba(245, 234, 212, .2);
   color: var(--steel);
   font-size: .85rem;

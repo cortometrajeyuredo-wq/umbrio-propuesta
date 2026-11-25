@@ -8,6 +8,9 @@
 
 /* Paleta oficial de Umbrío (Paleta de Colores.png). Una sola tipografía: Amarante. */
 :root {
+  /* Ancho que ocupa el modal LSC flotante (esquina superior derecha) más su margen; 0 cuando va en el flujo (<1024px).
+     Las secciones centradas lo restan a ambos lados para no quedar debajo del modal. */
+  --lsc-reserve: 0px;
   --violet: #9431c0;
   --cyan: #07f3f3;
   --aqua: #0697a8;
@@ -171,4 +174,8 @@ h3 {
   font-size: .85rem;
   letter-spacing: .08em;
   text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  :root { --lsc-reserve: calc(clamp(170px, min(17vw, 27vh), 290px) + clamp(12px, 2.5vw, 36px) + 1rem); }
 }

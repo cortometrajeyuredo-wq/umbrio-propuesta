@@ -33,11 +33,12 @@ const MakingContenedor = styled.section`
   color: var(--cream);
   background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .5) 24%, rgba(0, 0, 0, .6) 72%, #000 100%), url(${biblioteca}) center / cover no-repeat;
 
-  h2 { margin: .4rem 0 1.2rem; }
+  h2 { margin: .4rem 0 clamp(.6rem, 2vh, 1.2rem); }
 `;
 
 const VideoContainer = styled.div`
-  width: min(100%, 980px, calc(58svh * 16 / 9));
+  /* Alto del video = pantalla menos título, botón y márgenes (~21rem), para que la sección quepa entera. */
+  width: min(100%, 980px, 100vw - 2 * var(--lsc-reserve), calc(max(100svh - 21rem, 11rem) * 16 / 9));
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border: 2px solid var(--aqua);

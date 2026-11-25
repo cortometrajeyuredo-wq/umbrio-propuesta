@@ -43,12 +43,12 @@ const FilmInner = styled.div`
   margin: auto;
   text-align: center;
   h2 { margin: .4rem 0 1rem; }
-  > p { max-width: 720px; margin: 0 auto 1.8rem; color: var(--cream); font-size: clamp(1rem, 1.8vw, 1.2rem); line-height: 1.6; }
+  > p { max-width: min(720px, 100vw - 2 * var(--lsc-reserve)); margin: 0 auto clamp(1rem, 3vh, 1.8rem); color: var(--cream); font-size: clamp(1rem, 1.8vw, 1.2rem); line-height: 1.6; }
 `;
 
 const Player = styled.div`
   /* Alto del video = alto de pantalla menos título, texto y nota (~30rem), para que la sección quepa entera. */
-  width: min(100%, calc(max(100svh - 30rem, 14rem) * 16 / 9));
+  width: min(100%, 100vw - 2 * var(--lsc-reserve), calc(max(100svh - 28rem, 8rem) * 16 / 9));
   margin: 0 auto;
   overflow: hidden;
   border: 2px solid var(--violet);

@@ -89,19 +89,23 @@ const imageReveal = keyframes`
 `;
 const Layout = styled.div`
   width: min(1320px, 100% - 3rem); margin: auto;
-  padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(5rem, 10vh, 6.5rem); color: var(--cream);
+  padding: clamp(3rem, 9vh, 6.5rem) 0 clamp(2rem, 7vh, 6.5rem); color: var(--cream);
   @media (max-width: 1023px) { padding-top: 1rem; }
   &:focus-visible { outline: 2px solid var(--cyan); outline-offset: 8px; }
 `;
 const Header = styled.header`
-  max-width: 760px; margin: 0 auto clamp(1.2rem, 3.5vh, 2.5rem); text-align: center;
-  h2 { margin: .4rem 0 .6rem; font-size: clamp(2.5rem, min(5.5vw, 8vh), 4.6rem); }
+  max-width: 760px; margin: 0 auto clamp(.6rem, 2.6vh, 2.5rem); text-align: center;
+  h2 { margin: .4rem 0 .6rem; font-size: clamp(2.2rem, min(5.5vw, 7vh), 4.6rem); }
   p { margin: 0; font-size: clamp(1rem, 1.5vw, 1.18rem); line-height: 1.5; }
 `;
 const Feature = styled.div`
-  display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
   align-items: center; gap: clamp(1rem, 2.5vw, 3rem);
   @media (max-width: 900px) { grid-template-columns: 1fr; }
+  /* Escritorio: reserva solo la parte del modal LSC (esquina superior derecha) que invade el contenido. */
+  @media (min-width: 1024px) {
+    padding-right: max(0px, calc(clamp(170px, min(17vw, 27vh), 290px) + clamp(12px, 2.5vw, 36px) + 1rem - max(1.5rem, (100vw - 1320px) / 2)));
+  }
 `;
 const ImagePanel = styled.div`display: flex; align-items: center; gap: .4rem; min-width: 0;`;
 const Arrow = styled.button`
@@ -119,7 +123,7 @@ const Visual = styled.div`
   @media (prefers-reduced-motion: reduce) { animation: none; }
 `;
 const Imagen = styled.img`
-  display: block; width: 100%; height: min(50vh, 520px); object-fit: contain;
+  display: block; width: 100%; height: min(48svh, 520px); object-fit: contain;
   @media (max-width: 900px) { height: min(40vh, 400px); }
 `;
 const Era = styled.span<{ $ahora: boolean }>`
@@ -138,15 +142,15 @@ const Era = styled.span<{ $ahora: boolean }>`
 const Scroll = styled.div`
   --roller: clamp(40px, 4.2vw, 64px);
   position: relative; display: flex; min-width: 0;
-  min-height: clamp(360px, 54vh, 540px);
+  min-height: clamp(300px, 52svh, 540px);
   @media (max-width: 900px) { min-height: 340px; }
   @media (max-width: 600px) { min-height: 420px; }
 `;
 const Paper = styled.div<{ $rolled: boolean }>`
   /* En el flujo (no absoluto) para que la hoja crezca si el texto es largo; los rodillos siguen su alto. */
-  flex: 1; min-width: 0; margin: clamp(14px, 2.2vw, 22px) calc(var(--roller) * .75);
+  flex: 1; min-width: 0; margin: clamp(10px, min(2.2vw, 2.2vh), 22px) calc(var(--roller) * .75);
   display: grid; place-items: center;
-  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem); box-sizing: border-box;
+  padding: clamp(1.6rem, min(4vw, 6vh), 3.5rem) clamp(1.2rem, 3vw, 3.5rem); box-sizing: border-box;
   background: url(${parchment}) center / 100% 100% no-repeat;
   transform-origin: center;
   transform: scaleX(${({ $rolled }) => ($rolled ? 0 : 1)});
@@ -169,13 +173,13 @@ const StoryText = styled.div<{ $rolled: boolean }>`
   width: 100%; max-width: 52ch; text-align: center; color: #2a1d26;
   opacity: ${({ $rolled }) => ($rolled ? 0 : 1)};
   transition: opacity ${ROLL_MS / 2}ms ease;
-  h3 { margin: .5rem 0 1rem; color: var(--indigo); font-size: clamp(1.6rem, 2.6vw, 2.4rem); line-height: 1.15; }
-  p { margin: 0; font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.55; }
+  h3 { margin: .5rem 0 clamp(.5rem, 1.6vh, 1rem); color: var(--indigo); font-size: clamp(1.6rem, min(2.6vw, 5vh), 2.4rem); line-height: 1.15; }
+  p { margin: 0; font-size: clamp(.95rem, min(1.3vw, 2.5vh), 1.2rem); line-height: 1.5; }
   @media (prefers-reduced-motion: reduce) { transition: none; }
 `;
 const Counter = styled.span`
   color: #6a2e86; font-size: .9rem; letter-spacing: .06em; text-transform: uppercase;
 `;
 const Hint = styled.p`
-  margin: 1rem 0 0; color: var(--steel); font-size: .85rem; letter-spacing: .05em; text-align: center; text-transform: uppercase;
+  margin: clamp(.5rem, 1.6vh, 1rem) 0 0; color: var(--steel); font-size: .85rem; letter-spacing: .05em; text-align: center; text-transform: uppercase;
 `;

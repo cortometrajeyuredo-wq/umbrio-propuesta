@@ -74,7 +74,7 @@ const Section = styled.section`
   min-height: 100svh;
   display: grid;
   align-items: center;
-  padding: clamp(4.5rem, 7vh, 6rem) 1.25rem clamp(2rem, 4vh, 3rem);
+  padding: clamp(3rem, 7vh, 6rem) 1.25rem clamp(1rem, 3.5vh, 3rem);
   color: var(--cream);
   background: radial-gradient(circle at 50% 8%, rgba(148, 49, 192, .22), transparent 45%), linear-gradient(180deg, #09070d, #120f2a 58%, #09070d);
 `;
@@ -84,17 +84,23 @@ const Inner = styled.div`
 `;
 
 const Intro = styled.header`
-  max-width: 700px;
-  margin: 0 auto clamp(1.2rem, 2.5vh, 2.5rem);
+  max-width: min(760px, 100vw - 2 * var(--lsc-reserve));
+  margin: 0 auto clamp(1rem, 2.5vh, 2.5rem);
   text-align: center;
 
-  h2 { margin: .45rem 0 .8rem; font-size: clamp(3rem, min(8vw, 11vh), 6rem); line-height: 1; letter-spacing: .04em; }
+  h2 { margin: .45rem 0 .8rem; font-size: clamp(2.2rem, min(8vw, 8.5vh), 6rem); line-height: 1; letter-spacing: .04em; }
   p { margin: 0; color: var(--cream); font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.55; }
 `;
 
 const Carousel = styled.div`
   width: 100%;
   margin: auto;
+
+  /* Escritorio: reserva solo la parte del modal LSC (esquina superior derecha) que invade las tarjetas. */
+  @media (min-width: 1024px) {
+    box-sizing: border-box;
+    padding-right: max(0px, calc(clamp(170px, min(17vw, 27vh), 290px) + clamp(12px, 2.5vw, 36px) + 1rem - max(1.25rem, (100vw - 1320px) / 2)));
+  }
 `;
 
 const Track = styled.div`
@@ -125,8 +131,8 @@ const Card = styled.article<{ $tone: number }>`
   flex-direction: column;
   align-items: center;
   min-width: 0;
-  min-height: clamp(360px, 46svh, 500px);
-  padding: 1.75rem 1.25rem;
+  min-height: clamp(280px, 46svh, 500px);
+  padding: clamp(.7rem, 2.4vh, 1.75rem) 1.25rem;
   border: 2px solid ${({ $tone }) => ["var(--lavender)", "var(--aqua)", "var(--violet)"][$tone]};
   border-radius: 5px;
   background: ${({ $tone }) => ["linear-gradient(160deg, #302d5a, #120f26)", "linear-gradient(160deg, #0b2c55, #011740)", "linear-gradient(160deg, #3c1e52, #170c24)"][$tone]};
@@ -139,7 +145,7 @@ const Card = styled.article<{ $tone: number }>`
 
 const Portrait = styled.div`
   overflow: hidden;
-  width: min(210px, 82%);
+  width: min(210px, 82%, calc(19svh * 17 / 20));
   aspect-ratio: 17 / 20;
   border: 3px solid var(--cream);
   border-radius: 50%;
@@ -153,7 +159,7 @@ const CardText = styled.div`
   flex-direction: column;
   align-items: center;
   flex: 1;
-  padding: 1rem .25rem 0;
+  padding: clamp(.5rem, 1.5vh, 1rem) .25rem 0;
   text-align: center;
 
   h3 { color: var(--cream); font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; text-transform: none; }
@@ -168,7 +174,7 @@ const Controls = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  margin-top: clamp(1.2rem, 3vh, 2rem);
+  margin-top: clamp(.4rem, 2vh, 2rem);
 `;
 
 const Arrow = styled.button`

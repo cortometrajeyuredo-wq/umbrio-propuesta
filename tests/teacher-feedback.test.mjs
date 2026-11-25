@@ -88,7 +88,7 @@ test('locations parchment rolls up between places; characters use larger portrai
   assert.match(locations, /setRolled\(true\)/);
   assert.match(locations, /scaleX\(/);
   assert.match(locations, /prefers-reduced-motion/);
-  assert.match(characters, /clamp\(84px/);
+  assert.match(characters, /clamp\(72px/);
 });
 
 test('preproduction has a sticky chapter bar, reels, in-page lightbox and storyboard pages', async () => {

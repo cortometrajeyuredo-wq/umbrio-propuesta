@@ -44,7 +44,7 @@ const CarruselContenedor = styled.section`
     width: 100%;
     min-height: 100svh;
     display: flex;
-    @media (max-width: 639px) { flex-direction: column; justify-content: flex-start; padding-top: 76px; box-sizing: border-box; }
+    @media (max-width: 1023px) { flex-direction: column; justify-content: flex-start; padding-top: 76px; box-sizing: border-box; }
     justify-content: center;
     align-items: center;
     background: radial-gradient(circle at 65% 30%, #34283a, #100b18 58%, #07070b);

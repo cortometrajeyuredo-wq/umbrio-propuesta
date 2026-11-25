@@ -19,7 +19,7 @@ const PersonajesWrapper = styled.section`
   box-sizing: border-box;
   min-height: 100svh;
   display: flex;
-  @media (max-width: 639px) { flex-direction: column; }
+  @media (max-width: 1023px) { flex-direction: column; }
   align-items: center;
   justify-content: center;
   padding: clamp(3.5rem, 8vh, 5.5rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vh, 3.5rem);

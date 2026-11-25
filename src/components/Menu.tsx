@@ -42,12 +42,12 @@ const MobileBrand = styled.a`
 `;
 
 const MobileMenuWrapper = styled.nav<{ $open: boolean }>`
-  position: fixed; inset: 0; width: 100%; height: 100vh; padding: 104px 32px 32px; overflow-y: auto;
+  position: fixed; inset: 0; width: 100%; height: 100dvh; padding: 96px 32px 24px; overflow-y: auto; box-sizing: border-box;
   background-color: var(--soft-bg); backdrop-filter: blur(12px); z-index: 1000;
   transform: translateX(${(props) => props.$open ? "0" : "100%"}); opacity: ${(props) => props.$open ? 1 : 0}; pointer-events: ${(props) => props.$open ? "auto" : "none"};
   transition: transform .5s cubic-bezier(.77, 0, .175, 1), opacity .3s ease;
-  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
-  a { color: #f6e9c7; font-family: var(--heading); font-size: 1.55rem; text-decoration: none; } a[aria-current="page"] { color: var(--gold); } a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  a { display: flex; align-items: center; min-height: 48px; color: #f6e9c7; font-family: var(--heading); font-size: 1.55rem; text-decoration: none; } a[aria-current="page"] { color: var(--gold); } a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
 `;
 
 const MenuButtonWrapper = styled.button`

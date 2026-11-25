@@ -90,7 +90,7 @@ const imageReveal = keyframes`
 const Layout = styled.div`
   width: min(1320px, 100% - 3rem); margin: auto;
   padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(5rem, 10vh, 6.5rem); color: var(--cream);
-  @media (max-width: 639px) { padding-top: 1rem; }
+  @media (max-width: 1023px) { padding-top: 1rem; }
   &:focus-visible { outline: 2px solid var(--cyan); outline-offset: 8px; }
 `;
 const Header = styled.header`

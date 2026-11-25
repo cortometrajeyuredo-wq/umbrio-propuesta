@@ -104,6 +104,12 @@ const Inner = styled.div`
     grid-template-columns: 1fr;
     gap: 3.5rem;
   }
+
+  /* Escritorio: reserva el ancho del modal LSC (esquina superior derecha) para que no tape las capturas. */
+  @media (min-width: 1024px) {
+    padding-right: calc(clamp(170px, min(17vw, 27vh), 290px) + clamp(12px, 2.5vw, 36px));
+    box-sizing: border-box;
+  }
 `;
 
 const Intro = styled.div`

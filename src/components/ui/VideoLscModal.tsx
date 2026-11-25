@@ -89,14 +89,21 @@ const esquina = ($top: string, $flota: boolean) => $flota ? `
     top: 84px;
     right: 12px;
   }
+
+  /* Celular horizontal: poco alto; el titular queda abajo a la derecha, así que el modal pasa a la izquierda. */
+  @media (min-width: 640px) and (max-height: 600px) and (orientation: landscape) {
+    top: 104px;
+    left: clamp(12px, 2.5vw, 36px);
+    right: auto;
+  }
 ` : `
   position: absolute;
   top: ${$top};
   right: clamp(12px, 2.5vw, 36px);
   z-index: 600;
 
-  /* En móvil no flota: ocupa su propio bloque al inicio de la sección y no tapa títulos ni controles. */
-  @media (max-width: 639px) {
+  /* Hasta tablet en vertical no flota: ocupa su propio bloque al inicio de la sección y no tapa títulos ni controles. */
+  @media (max-width: 1023px) {
     position: relative;
     top: auto;
     right: auto;
@@ -119,6 +126,9 @@ const Marco = styled.aside<{ $top: string; $flota: boolean }>`
   background: var(--navy);
   box-shadow: 0 14px 34px rgba(0, 0, 0, .55);
 
+  @media (min-width: 640px) and (max-width: 1023px) {
+    width: clamp(150px, 22vw, 210px);
+  }
   @media (max-width: 639px) {
     width: min(132px, 34vw);
     aspect-ratio: 9 / 16;

@@ -107,3 +107,9 @@ test('preproduction has a sticky chapter bar, reels, in-page lightbox and storyb
   assert.equal(storyboard.length, 109);
   assert.match(page, /STORYBOARD_PAGE_COUNT = 109/);
 });
+test('LSC modal never floats over content on phones and tablets in portrait', async () => {
+  const [modal, juego] = await Promise.all([component('ui/VideoLscModal.tsx'), component('Videojuego.tsx')]);
+  assert.match(modal, /@media \(max-width: 1023px\) \{\s*position: relative;/);
+  assert.match(modal, /\(max-height: 600px\) and \(orientation: landscape\)/);
+  assert.match(juego, /padding-right: calc\(clamp\(170px, min\(17vw, 27vh\), 290px\)/);
+});

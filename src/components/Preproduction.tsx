@@ -30,7 +30,7 @@ const chapters = [
   { id: 'bocetos', number: '01', title: 'Primeras formas', label: 'Bocetos', description: 'Personajes y lugares nacen del trazo antes de encontrar su forma definitiva.' },
   { id: 'concepto', number: '02', title: 'El universo toma forma', label: 'Concept art', description: 'Diseños de personajes y escenarios que definen el mundo visual de Umbrío.' },
   { id: 'iluminacion', number: '03', title: 'La luz cuenta la historia', label: 'Iluminación', description: 'Estudios de atmósfera para las locaciones que recorren la historia.' },
-  { id: 'color', number: '04', title: 'Color script', label: 'Color', description: 'La paleta del proyecto y la secuencia de color que acompaña el relato.' },
+  { id: 'color', number: '04', title: 'La paleta del mundo', label: 'Color', description: 'La paleta de Umbrío y los colores que definen a cada personaje.' },
   { id: 'texturas', number: '05', title: 'Los detalles del mundo', label: 'Texturizado', description: 'Objetos y superficies preparados para habitar los escenarios.' },
 ] as const;
 

@@ -15,7 +15,7 @@ Para generar la versión de publicación: `npm run build`.
 
 ## Archivo de preproducción
 
-La sección Making off enlaza a `/preproduccion/`, una página independiente con 24 piezas seleccionadas de `../2. Arte` en carretes por capítulo (barra de capítulos fija y ampliación en la misma página), el storyboard en láminas con aviso de spoilers y un enlace al artbook. Los sets de color de personajes se retiraron porque repetían la sección Personajes.
+La sección Making off enlaza a `/preproduccion/`, una página independiente con 27 piezas seleccionadas de `../2. Arte` en carretes por capítulo (barra de capítulos fija y ampliación en la misma página), el storyboard en láminas con aviso de spoilers y un enlace al artbook. En Color se retiró la ilustración del color script de Noah porque repetía la sección Personajes; se mantienen la paleta y los sets de color de cada personaje.
 
 Los archivos optimizados se generan en `public/preproduccion/` con PowerShell y el codificador de imágenes de Windows:
 

@@ -48,7 +48,7 @@ La página presenta una selección para público general. Evita divulgar documen
 
 ## Recursos pendientes de integración
 
-- Sustituir la figura provisional del Sombrerón en `Hero.tsx` por la ilustración aprobada para la primera pantalla; el boceto de Noah y Simón se muestra al inicio del cierre.
+- Sustituir la figura provisional del Sombrerón en `Hero.tsx` por la ilustración aprobada para la primera pantalla. El cierre ya usa el avance de la ilustración final (`ilustracion-final.webp`); reemplazarlo cuando llegue la versión definitiva.
 - Reemplazar `mapaTunja.webp` por el mapa final sin marcadores impresos cuando llegue. Las cuatro gemas interactivas usan las posiciones del mapa anterior y muestran fotografías; falta validar su ubicación definitiva e incorporar los renders 3D aprobados de cada locación.
 - Incorporar el render 3D de Mano Peluda y los recursos finales de Manos de la Pared en `personajesData.ts` cuando estén aprobados. Las fichas indican si la imagen grande es 2D o 3D.
 - Reemplazar los marcos CSS provisionales del juego, equipo y llamadas a la acción por las ilustraciones definitivas de piedra, runas y gemas. Activar los botones de Google Play y App Store solo cuando existan sus fichas públicas.
@@ -56,7 +56,7 @@ La página presenta una selección para público general. Evita divulgar documen
 - Los textos de portada y las descripciones públicas requieren la revisión editorial de publicidad mencionada en la reunión.
 - **Renders LSC finales del Inicio**: `Hero.tsx` usa `Inicio.mp4` / `Inicio1.mp4` como provisionales.
 - **Video LSC del Artbook**: no existe; hay que pedírselo a Dayana. Mientras tanto el Artbook muestra "Interpretación LSC del artbook: próximamente".
-- **Tráiler oficial**: `Cortometraje.tsx` reproduce `making_off.mp4` rotulado como video provisional. `Trailer.mp4` es la interpretación LSC del tráiler, no el tráiler.
+- **Tráiler oficial**: `Cortometraje.tsx` simula el reproductor con la portada (play, barra, ampliar y minimizar) y lo rotula como simulación. Al llegar el tráiler, reemplazar la pantalla simulada por el video. `Trailer.mp4` es la interpretación LSC del tráiler, no el tráiler.
 - **Fondo con bocetos en delineado** para preproducción (pedido a publicidad/diseño); hoy se usa `fondotextura.webp`.
 - **Cortes verticales de cada video LSC** para móvil (solo existe el del Inicio).
 - Los iconos de redes se añadirán cuando existan los perfiles oficiales y sus enlaces aprobados; el favicon ya usa el logo dorado disponible.

@@ -18,5 +18,5 @@ test('the footer keeps its closing message with the relocated illustration', asy
   const footer = await source('Footer.tsx');
   assert.match(footer, /La exploración continúa/);
   assert.doesNotMatch(footer, /footer-boceto\.jpeg/);
-  assert.match(footer, /banner-boceto\.jpeg|ClosingFrame/);
+  assert.match(footer, /ilustracion-final\.webp/);
 });

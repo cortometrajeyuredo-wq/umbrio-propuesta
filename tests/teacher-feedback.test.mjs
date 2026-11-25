@@ -12,7 +12,7 @@ test('the first screen features Sombrerón and the rejected closing sketch is ab
   ]);
   assert.match(hero, /sombreron_pose_espalda\.webp/);
   assert.match(film, /portadaTrailler\.webp/);
-  assert.match(footer, /banner-boceto\.jpeg/);
+  assert.match(footer, /ilustracion-final\.webp/);
   assert.doesNotMatch(footer, /footer-boceto\.jpeg/);
   assert.match(app, /<BackToTop\s*\/>/);
 });

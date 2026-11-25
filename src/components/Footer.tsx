@@ -2,13 +2,23 @@ import styled from "styled-components";
 import umbrioLogo from "../assets/brand/umbrio-logo.png";
 import senaLogo from "../assets/brand/logo-sena.webp";
 import colombiaMagicaLogo from "../assets/brand/logo-colombia-magica.webp";
-import closingIllustration from "../assets/img/banner-boceto.jpeg";
+// Avance de la ilustración final (1.LANDINGPAGEBIG), exportado a 2400 y 1200 px.
+import closingIllustration from "../assets/img/ilustracion-final.webp";
+import closingIllustrationMobile from "../assets/img/ilustracion-final-movil.webp";
 
 export const Footer = () => {
   return (
     <FooterSection data-reveal>
       <ClosingFrame>
-        <img src={closingIllustration} alt="Noah y Simón frente a las leyendas de Umbrío" loading="lazy" />
+        <img
+          src={closingIllustration}
+          srcSet={`${closingIllustrationMobile} 1200w, ${closingIllustration} 2400w`}
+          sizes="100vw"
+          alt="Noah y Simón con la linterna frente al Sombrerón, el Espanto del Panóptico, el perro negro y las Manos de la Pared"
+          loading="lazy"
+          width={2400}
+          height={1350}
+        />
       </ClosingFrame>
       <ClosingCopy><span>La exploración continúa</span><p>Hay historias que siguen vivas después de cerrar el libro.</p></ClosingCopy>
       <FooterGlow aria-hidden="true" />

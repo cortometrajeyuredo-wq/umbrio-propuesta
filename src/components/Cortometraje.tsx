@@ -1,20 +1,43 @@
 import { useEffect, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import fondo from '../assets/img/fondo.webp';
 import portada from '../assets/img/portadaTrailler.webp';
-// TODO: reemplazar por el tráiler oficial del cortometraje cuando se publique.
-import videoProvisional from '../assets/videos/making_off.mp4';
 import trailerLsc from '../assets/videos/Trailer.mp4';
 import { VideoLscModal } from './ui/VideoLscModal';
 
 type Modo = 'seccion' | 'ampliado' | 'mini';
 
+/*
+ * Simulación del reproductor del tráiler (pedido de la profesora): mientras no exista
+ * el tráiler oficial, la portada hace de pantalla y la barra avanza como un video real.
+ * TODO: cuando llegue el tráiler, sustituir Pantalla por el elemento de video y usar su currentTime.
+ */
+const DURACION = 90;
+
+const formato = (segundos: number) => `${Math.floor(segundos / 60)}:${String(Math.floor(segundos % 60)).padStart(2, '0')}`;
+
 export const Cortometraje = () => {
   const [modo, setModo] = useState<Modo>('seccion');
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [reproduciendo, setReproduciendo] = useState(false);
+  const [tiempo, setTiempo] = useState(0);
   const ampliarRef = useRef<HTMLButtonElement>(null);
   const reducirRef = useRef<HTMLButtonElement>(null);
+
+  // El avance sigue aunque el reproductor esté ampliado o minimizado: el estado vive aquí.
+  useEffect(() => {
+    if (!reproduciendo) return;
+    const id = window.setInterval(() => {
+      setTiempo((actual) => {
+        if (actual + 0.25 >= DURACION) {
+          setReproduciendo(false);
+          return 0;
+        }
+        return actual + 0.25;
+      });
+    }, 250);
+    return () => window.clearInterval(id);
+  }, [reproduciendo]);
 
   useEffect(() => {
     if (modo !== 'ampliado') return;
@@ -32,9 +55,11 @@ export const Cortometraje = () => {
   };
 
   const cerrarMini = () => {
-    videoRef.current?.pause();
+    setReproduciendo(false);
     volver();
   };
+
+  const alternar = () => setReproduciendo((valor) => !valor);
 
   return (
     <FilmSection id="Corto" data-reveal>
@@ -48,14 +73,36 @@ export const Cortometraje = () => {
           {modo === 'ampliado' && <Backdrop aria-hidden="true" onClick={() => setModo('seccion')} />}
           <Player
             $modo={modo}
-            role={modo === 'ampliado' ? 'dialog' : undefined}
+            role={modo === 'ampliado' ? 'dialog' : 'region'}
             aria-modal={modo === 'ampliado' ? true : undefined}
-            aria-label={modo === 'ampliado' ? 'Video del cortometraje ampliado' : undefined}
+            aria-label={modo === 'ampliado' ? 'Tráiler del cortometraje ampliado' : 'Tráiler del cortometraje'}
           >
-            <video ref={videoRef} src={videoProvisional} poster={portada} controls playsInline preload="metadata" width={1280} height={720}>
-              Tu navegador no puede reproducir este video.
-            </video>
-            <PlayerBar>
+            <Pantalla $reproduciendo={reproduciendo} onClick={alternar}>
+              <img src={portada} alt="Portada del tráiler de Umbrío: Noah y Simón ante la entrada de los osarios" width={1280} height={720} />
+              {!reproduciendo && (
+                <PlayGrande type="button" onClick={(event) => { event.stopPropagation(); alternar(); }} aria-label={tiempo > 0 ? 'Continuar tráiler' : 'Reproducir tráiler'}>
+                  <span aria-hidden="true">▶</span>
+                </PlayGrande>
+              )}
+              <Etiqueta>Tráiler · próximamente</Etiqueta>
+            </Pantalla>
+
+            <Controles>
+              <button type="button" onClick={alternar} aria-label={reproduciendo ? 'Pausar tráiler' : 'Reproducir tráiler'}>
+                <span aria-hidden="true">{reproduciendo ? '❚❚' : '▶'}</span>
+              </button>
+              <Barra
+                type="range"
+                min={0}
+                max={DURACION}
+                step={1}
+                value={tiempo}
+                onChange={(event) => setTiempo(Number(event.target.value))}
+                aria-label="Posición del tráiler"
+                aria-valuetext={`${formato(tiempo)} de ${formato(DURACION)}`}
+                style={{ ['--avance' as string]: `${(tiempo / DURACION) * 100}%` }}
+              />
+              <Tiempo data-tiempo aria-hidden="true">{formato(tiempo)} / {formato(DURACION)}</Tiempo>
               {modo === 'seccion' && (
                 <>
                   <button ref={ampliarRef} type="button" onClick={() => setModo('ampliado')}>Ampliar</button>
@@ -65,7 +112,7 @@ export const Cortometraje = () => {
               {modo === 'ampliado' && (
                 <>
                   <button ref={reducirRef} type="button" onClick={() => setModo('mini')}>Minimizar</button>
-                  <button type="button" onClick={volver} aria-label="Cerrar video ampliado">Cerrar ✕</button>
+                  <button type="button" onClick={volver} aria-label="Cerrar tráiler ampliado">Cerrar ✕</button>
                 </>
               )}
               {modo === 'mini' && (
@@ -74,20 +121,25 @@ export const Cortometraje = () => {
                   <button type="button" onClick={cerrarMini} aria-label="Cerrar reproductor flotante">✕</button>
                 </>
               )}
-            </PlayerBar>
+            </Controles>
           </Player>
           {modo !== 'seccion' && (
             <Reserved>
               <img src={portada} alt="" width={1280} height={720} />
-              <span>El video sigue reproduciéndose {modo === 'mini' ? 'en la esquina inferior' : 'ampliado'}.</span>
+              <span>El tráiler sigue {modo === 'mini' ? 'en la esquina inferior' : 'ampliado'}.</span>
             </Reserved>
           )}
         </Stage>
-        <Note>Video provisional del making off. Aquí se publicará el tráiler oficial.</Note>
+        <Note>Simulación del reproductor: aquí se publicará el tráiler oficial.</Note>
       </FilmInner>
     </FilmSection>
   );
 };
+
+const acercamiento = keyframes`
+  from { transform: scale(1); }
+  to { transform: scale(1.12) translate(-2%, -1%); }
+`;
 
 const FilmSection = styled.section`
   position: relative;
@@ -131,14 +183,12 @@ const Player = styled.div<{ $modo: Modo }>`
   background: #000;
   box-shadow: 0 30px 90px rgba(0, 0, 0, .5);
 
-  video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
-
   ${({ $modo }) => $modo === 'ampliado' && css`
     position: fixed;
     z-index: 4001;
     top: 50%;
     left: 50%;
-    width: min(94vw, calc(84svh * 16 / 9));
+    width: min(94vw, calc(80svh * 16 / 9));
     transform: translate(-50%, -50%);
   `}
 
@@ -147,19 +197,80 @@ const Player = styled.div<{ $modo: Modo }>`
     z-index: 1250;
     left: clamp(12px, 3vw, 36px);
     bottom: clamp(12px, 3vw, 36px);
-    width: min(340px, calc(100vw - 120px));
+    width: min(360px, calc(100vw - 120px));
     border-color: var(--aqua);
+
+    /* Pequeño: sin contador de tiempo y botones compactos para que quepa el cierre. */
+    [data-tiempo] { display: none; }
+    button { padding-inline: .6rem; }
   `}
 `;
 
-const PlayerBar = styled.div`
+const Pantalla = styled.div<{ $reproduciendo: boolean }>`
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  cursor: pointer;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: ${acercamiento} ${DURACION}s linear forwards;
+    animation-play-state: ${({ $reproduciendo }) => ($reproduciendo ? 'running' : 'paused')};
+    filter: ${({ $reproduciendo }) => ($reproduciendo ? 'none' : 'brightness(.75)')};
+    transition: filter .3s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) { img { animation: none; } }
+`;
+
+const PlayGrande = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 9vw, 88px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  color: var(--cream);
+  background: rgba(148, 49, 192, .85);
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  transition: background .2s ease, transform .2s ease;
+
+  span { margin-left: .2em; }
+  &:hover { background: var(--violet); }
+  &:active { transform: translate(-50%, -50%) scale(.94); }
+  &:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
+`;
+
+const Etiqueta = styled.span`
+  position: absolute;
+  top: .7rem;
+  left: .7rem;
+  padding: .25rem .6rem;
+  border-radius: 3px;
+  color: var(--navy);
+  background: var(--cyan);
+  font-size: .8rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  pointer-events: none;
+`;
+
+const Controles = styled.div`
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
   gap: .5rem;
   padding: .45rem;
   background: var(--navy);
 
   button {
+    flex: none;
     min-height: 44px;
     min-width: 44px;
     padding: .4rem .9rem;
@@ -174,11 +285,36 @@ const PlayerBar = styled.div`
   button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
 `;
 
+const Barra = styled.input`
+  flex: 1;
+  min-width: 60px;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+
+  &::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--cyan) var(--avance), var(--indigo) var(--avance)); }
+  &::-moz-range-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--cyan) var(--avance), var(--indigo) var(--avance)); }
+  &::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; margin-top: -5px; border: 0; border-radius: 50%; background: var(--cream); }
+  &::-moz-range-thumb { width: 16px; height: 16px; border: 0; border-radius: 50%; background: var(--cream); }
+  &:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+`;
+
+const Tiempo = styled.span`
+  flex: none;
+  color: var(--mauve);
+  font-size: .9rem;
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 520px) { display: none; }
+`;
+
 const Reserved = styled.div`
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: grid;
   place-items: center;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border: 2px dashed var(--lavender);
   border-radius: 6px;

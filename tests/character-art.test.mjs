@@ -38,7 +38,7 @@ test('the refreshed characters use transparent PNG cutouts, not framed cards', a
 test('transparent character art is fitted within the character panel instead of cropped', async () => {
   const component = await readFile(new URL('../src/components/CarouselPersonajes.tsx', import.meta.url), 'utf8');
   assert.match(component, /object-fit:\s*contain/);
-  assert.match(component, /const CarouselLayout = styled\.div`[\s\S]*?width:\s*min\(100%,\s*1250px\)/);
+  assert.match(component, /const CarouselLayout = styled\.div`[\s\S]*?width:\s*100%/);
   assert.match(component, /const ArtStage = styled\.div`[\s\S]*?height:\s*clamp\(/);
   assert.match(component, /<ArtStage>\s*<Image[\s\S]*?<\/ArtStage>/);
   assert.match(component, /const Image = styled\.img`[\s\S]*?height:\s*100%/);

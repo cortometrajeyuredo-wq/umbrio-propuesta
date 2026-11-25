@@ -5,9 +5,9 @@ import { fileURLToPath } from 'node:url';
 
 const directory = fileURLToPath(new URL('../public/artbook/', import.meta.url));
 
-test('the complete 56-page artbook is available in its original order', async () => {
+test('the complete 57-page V7 artbook is available in its original order', async () => {
   const files = (await readdir(directory)).filter((name) => name.endsWith('.webp')).sort();
-  const expected = Array.from({ length: 56 }, (_, index) => `page-${String(index + 1).padStart(2, '0')}.webp`);
+  const expected = Array.from({ length: 57 }, (_, index) => `page-${String(index + 1).padStart(2, '0')}.webp`);
 
   assert.deepEqual(files, expected);
   for (const file of files) {

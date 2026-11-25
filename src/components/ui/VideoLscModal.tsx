@@ -1,299 +1,189 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
-import { device } from "../../pantallas/breakpoints";
+import { useRef, useState } from "react";
 
 interface VideoLscModalProps {
   videoSrc: string;
+  /** Corte vertical para celular. Si no existe, se recorta el horizontal al intérprete. */
   videoSrcMobile?: string;
+  /** Distancia desde el borde superior de la sección en escritorio (deja libre el menú). */
+  $top?: string;
+  /** En el hero el contenido está abajo: ahí el modal puede seguir flotando en móvil. */
+  $flotaEnMovil?: boolean;
 }
 
-export const VideoLscModal = ({ videoSrc, videoSrcMobile }: VideoLscModalProps) => {
+/*
+ * Interpretación en Lengua de Señas Colombiana (LSC).
+ * Los videos son 16:9 con la intérprete al centro y franjas de color a los lados;
+ * el marco vertical con object-fit: cover muestra solo a la intérprete.
+ */
+export const VideoLscModal = ({ videoSrc, videoSrcMobile, $top = "24px", $flotaEnMovil = false }: VideoLscModalProps) => {
   const [abierto, setAbierto] = useState(true);
   const [reproduciendo, setReproduciendo] = useState(true);
-
   const videoRef = useRef<HTMLVideoElement>(null);
+  const reabrirRef = useRef<HTMLButtonElement>(null);
+  const cerrarRef = useRef<HTMLButtonElement>(null);
 
   const cerrarVideo = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
-
+    videoRef.current?.pause();
     setReproduciendo(false);
     setAbierto(false);
+    requestAnimationFrame(() => reabrirRef.current?.focus());
   };
 
   const abrirVideo = () => {
     setAbierto(true);
+    requestAnimationFrame(() => cerrarRef.current?.focus());
   };
 
   const togglePlay = async () => {
-    if (!videoRef.current) return;
-
-    if (videoRef.current.paused) {
-      await videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) await video.play();
+    else video.pause();
   };
 
-  /*
-   * Cuando se cierra:
-   * desaparece el video pero queda el botón
-   * EXACTAMENTE EN LA MISMA ZONA.
-   */
   if (!abierto) {
     return (
-      <BotonReabrir
-        type="button"
-        onClick={abrirVideo}
-        aria-label="Mostrar interpretación en lengua de señas"
-      >
-        ▶
+      <BotonReabrir ref={reabrirRef} type="button" $top={$top} $flota={$flotaEnMovil} onClick={abrirVideo} aria-label="Mostrar interpretación en lengua de señas">
+        LSC
       </BotonReabrir>
     );
   }
 
   return (
-    <Overlay>
-      <ModalContenedor>
-        <Cerrar
-          type="button"
-          onClick={cerrarVideo}
-          aria-label="Cerrar video"
-        >
-          ✕
-        </Cerrar>
+    <Marco $top={$top} $flota={$flotaEnMovil} aria-label="Interpretación en lengua de señas colombiana">
+      <Video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        onPlay={() => setReproduciendo(true)}
+        onPause={() => setReproduciendo(false)}
+      >
+        {videoSrcMobile && <source media="(max-width: 639px)" src={videoSrcMobile} type="video/mp4" />}
+        <source src={videoSrc} type="video/mp4" />
+      </Video>
 
-        <Video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          onPlay={() => setReproduciendo(true)}
-          onPause={() => setReproduciendo(false)}
-        >
-          {videoSrcMobile && <source media="(max-width: 639px)" src={videoSrcMobile} type="video/mp4" />}
-          <source src={videoSrc} type="video/mp4" />
-        </Video>
-
-        <Controles>
-          <ControlBoton
-            type="button"
-            onClick={togglePlay}
-            aria-label={reproduciendo ? "Pausar interpretación en lengua de señas" : "Reproducir interpretación en lengua de señas"}
-            aria-pressed={reproduciendo}
-          >
-            {reproduciendo ? "⏸" : "▶"}
-          </ControlBoton>
-        </Controles>
-      </ModalContenedor>
-    </Overlay>
+      <Cerrar ref={cerrarRef} type="button" onClick={cerrarVideo} aria-label="Cerrar interpretación en lengua de señas">
+        <span aria-hidden="true">✕</span>
+      </Cerrar>
+      <ControlBoton
+        type="button"
+        onClick={togglePlay}
+        aria-label={reproduciendo ? "Pausar interpretación en lengua de señas" : "Reproducir interpretación en lengua de señas"}
+      >
+        <span aria-hidden="true">{reproduciendo ? "❚❚" : "▶"}</span>
+      </ControlBoton>
+    </Marco>
   );
 };
 
-/* =========================
-   OVERLAY
-========================= */
-
-const Overlay = styled.div`
+const esquina = ($top: string, $flota: boolean) => $flota ? `
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: ${$top};
+  right: clamp(12px, 2.5vw, 36px);
   z-index: 600;
-  width: clamp(150px, 22vw, 240px);
-
-  pointer-events: none;
 
   @media (max-width: 639px) {
     top: 84px;
     right: 12px;
-    width: min(170px, 44vw);
+  }
+` : `
+  position: absolute;
+  top: ${$top};
+  right: clamp(12px, 2.5vw, 36px);
+  z-index: 600;
+
+  /* En móvil no flota: ocupa su propio bloque al inicio de la sección y no tapa títulos ni controles. */
+  @media (max-width: 639px) {
+    position: relative;
+    top: auto;
+    right: auto;
+    order: -1;
+    grid-column: 1 / -1;
+    justify-self: center;
+    align-self: center;
+    margin: 0 auto 1rem;
+    flex: none;
   }
 `;
-/* =========================
-   CONTENEDOR
-========================= */
 
-const ModalContenedor = styled.div`
-  position: relative;
-
-  pointer-events: auto;
-
-  /*
-   * ORIGINAL:
-   * width: 95%;
-   *
-   * Aumentarlo 9% daría 103.55%.
-   * Para evitar que se salga de la pantalla,
-   * usamos el ancho disponible como límite.
-   */
-  width: 100%;
-
-  border-radius: 12px;
-
+const Marco = styled.aside<{ $top: string; $flota: boolean }>`
+  ${({ $top, $flota }) => esquina($top, $flota)}
+  width: clamp(170px, min(17vw, 27vh), 290px);
+  aspect-ratio: 3 / 4;
   overflow: hidden;
+  border: 2px solid var(--lavender);
+  border-radius: 10px;
+  background: var(--navy);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .55);
 
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-
-  background: black;
-
-  margin: 0;
-
-  @media ${device.tablet} {
-    /*
-     * ORIGINAL:
-     * 220px
-     *
-     * 220 × 1.09 = 239.8px
-     *
-     * REDONDEADO:
-     * 240px
-     */
-    width: 240px;
+  @media (max-width: 639px) {
+    width: min(132px, 34vw);
+    aspect-ratio: 9 / 16;
   }
 `;
-
-/* =========================
-   VIDEO
-========================= */
 
 const Video = styled.video`
-  width: 100%;
-  height: auto;
-  max-height: min(42vh, 360px);
-  object-fit: contain;
   display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 `;
 
-/* =========================
-   CERRAR
-========================= */
+const botonBase = `
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  transition: background .2s ease, color .2s ease;
+  &:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+`;
 
 const Cerrar = styled.button`
-  position: absolute;
-
-  top: 8px;
-  right: 8px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: transparent;
-
-  color: #f6e9c7;
-
-  border-radius: 50%;
-
-  width: 32px;
-  height: 32px;
-
-  font-weight: bold;
-  font-size: 1rem;
-
-  border: 2px solid #f4a009;
-
-  z-index: 2;
-
-  cursor: pointer;
-
-  &:hover {
-    background: #f4a009;
-  }
-
-  @media ${device.tablet} {
-    width: 36px;
-    height: 36px;
-
-    font-size: 1.2rem;
-  }
+  ${botonBase}
+  top: 6px;
+  right: 6px;
+  border: 2px solid var(--cream);
+  color: var(--cream);
+  background: rgba(1, 23, 64, .72);
+  &:hover, &:active { color: var(--navy); background: var(--cream); }
 `;
-
-/* =========================
-   CONTROLES
-========================= */
-
-const Controles = styled.div`
-  position: absolute;
-
-  bottom: 12px;
-  left: 12px;
-`;
-
-/* =========================
-   PLAY / PAUSE
-========================= */
 
 const ControlBoton = styled.button`
-  background: #f4a009;
-  color: #160e16;
-
-  border: 2px solid #f4a009;
-
-  padding: 6px 10px;
-
-  border-radius: 6px;
-
-  font-size: 14px;
-
-  cursor: pointer;
-
-  &:hover {
-    background: #f6e9c7;
-  }
-  &:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 2px; }
-
-  @media ${device.tablet} {
-    padding: 8px 12px;
-
-    font-size: 16px;
-  }
+  ${botonBase}
+  left: 6px;
+  bottom: 6px;
+  border: 2px solid var(--violet);
+  color: var(--cream);
+  background: rgba(148, 49, 192, .85);
+  font-size: .8rem;
+  &:hover, &:active { background: var(--violet); }
 `;
 
-/* =========================
-   BOTÓN PARA REABRIR
-========================= */
-
-const BotonReabrir = styled.button`
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: 600;
-
-  width: 50px;
-  height: 50px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #f4a009;
-  color: #160e16;
-  border: 2px solid #f6e9c7;
-
+const BotonReabrir = styled.button<{ $top: string; $flota: boolean }>`
+  ${({ $top, $flota }) => esquina($top, $flota)}
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--cream);
   border-radius: 50%;
+  color: var(--cream);
+  background: var(--violet);
+  font-size: .95rem;
+  letter-spacing: .04em;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .4);
+  transition: background .2s ease, transform .2s ease;
 
-  font-size: 18px;
-
-  cursor: pointer;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-
-  &:hover {
-    background: #f6e9c7;
-    color: #060606;
-
-    transform: scale(1.05);
-  }
-  &:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 3px; }
-
-  @media (max-width: 639px) {
-    top: 84px;
-    right: 12px;
-  }
+  &:hover { background: var(--lavender); transform: scale(1.05); }
+  &:active { transform: scale(.96); }
+  &:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { transition: none; &:hover { transform: none; } }
 `;

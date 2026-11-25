@@ -79,12 +79,12 @@ const Dialog = styled.div`
 `;
 const Header = styled.div`
   display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem;
-  span { color: #7bd8d1; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; }
+  span { color: var(--aqua-text); font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; }
   h2 { margin: .3rem 0 0; text-align: left; font-size: clamp(2rem, 4vw, 3.5rem); }
 `;
 const Close = styled.button`
   display: grid; place-items: center; flex: none; width: 44px; height: 44px;
-  border: 1px solid #f4a009; border-radius: 50%; color: #f4a009; background: #211526;
+  border: 2px solid var(--cream); border-radius: 50%; color: var(--cream); background: var(--violet);
   &:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 3px; }
 `;
 const MapStage = styled.div`
@@ -100,19 +100,19 @@ const Gem = styled.button`
   filter: drop-shadow(0 2px 4px #07101c);
   transition: filter .2s ease, scale .2s ease;
   &:hover, &[aria-pressed="true"] { filter: drop-shadow(0 0 9px #60f5ff); scale: 1.15; }
-  &:focus-visible { outline: 2px solid #f4a009; outline-offset: 2px; border-radius: 50%; }
+  &:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 50%; }
 `;
 const PlaceList = styled.div`
   display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0;
-  button { min-height: 42px; padding: .5rem .75rem; border: 1px solid #ad956f; border-radius: 4px; color: #f6e9d2; background: #2c2030; font: .8rem var(--heading); }
-  button[aria-pressed="true"], button:hover { color: #1b1017; background: #f4a009; }
+  button { min-height: 42px; padding: .5rem .75rem; border: 1px solid var(--lavender); border-radius: 4px; color: var(--cream); background: var(--indigo); font-size: .95rem; }
+  button[aria-pressed="true"], button:hover { color: var(--navy); background: var(--cyan); }
   button:focus-visible { outline: 2px solid #7bd8d1; outline-offset: 2px; }
 `;
 const PlaceDetail = styled.div`
   display: flex; align-items: center; gap: 1rem; padding: .75rem;
   border: 1px solid #655043; background: #221720;
   img { display: block; width: 130px; height: 90px; object-fit: cover; }
-  span { color: #7bd8d1; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; }
-  h3 { margin: .3rem 0 0; color: #f4a009; font-size: clamp(1rem, 2vw, 1.5rem); }
+  span { color: var(--aqua-text); font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; }
+  h3 { margin: .3rem 0 0; color: var(--gold); font-size: clamp(1.1rem, 2vw, 1.5rem); }
   @media (max-width: 480px) { img { width: 86px; height: 72px; } }
 `;

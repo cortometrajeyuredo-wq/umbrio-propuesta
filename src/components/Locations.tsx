@@ -26,9 +26,9 @@ export const Locaciones = () => {
            <BotonBrujula
         ref={mapButtonRef}
         onClick={() => setOpenMapa(true)}
-        aria-label="Abrir mapa"
+        aria-label="Abrir mapa de las locaciones de Tunja"
       >
-        <img src={brujula} alt="Brujula" />
+        <img src={brujula} alt="" width={80} height={80} />
       </BotonBrujula>
 
       <ModalMapa
@@ -42,8 +42,9 @@ export const Locaciones = () => {
 const CarruselContenedor = styled.section`
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
+    @media (max-width: 639px) { flex-direction: column; justify-content: flex-start; padding-top: 76px; box-sizing: border-box; }
     justify-content: center;
     align-items: center;
     background: radial-gradient(circle at 65% 30%, #34283a, #100b18 58%, #07070b);
@@ -72,7 +73,13 @@ const BotonBrujula = styled.button`
   }
 
   &:active {
-    transform: scale(1.1);
+    transform: scale(.94);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--cyan);
+    outline-offset: 4px;
+    border-radius: 50%;
   }
 
   @media ${device.tablet} {

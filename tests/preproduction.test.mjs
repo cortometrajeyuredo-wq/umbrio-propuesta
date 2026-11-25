@@ -23,15 +23,16 @@ test('preproduction header uses the gold Umbrío logo', async () => {
   await stat(new URL('src/assets/brand/umbrio-logo-gold.png', root));
 });
 
-test('the curated archive has 28 distinct, locally available images', async () => {
+test('the curated archive has 24 distinct images without repeating the character colour sets', async () => {
   const manifest = JSON.parse(await read('src/data/preproduction.json'));
-  assert.equal(manifest.length, 28);
-  assert.equal(new Set(manifest.map((item) => item.id)).size, 28);
+  assert.equal(manifest.length, 24);
+  assert.equal(new Set(manifest.map((item) => item.id)).size, 24);
+  assert.doesNotMatch(JSON.stringify(manifest), /color-(simon|noah|sombreron|espanto)"/);
   assert.deepEqual(
     Object.fromEntries([...new Set(manifest.map((item) => item.section))].map(
       (section) => [section, manifest.filter((item) => item.section === section).length],
     )),
-    { bocetos: 6, concepto: 8, iluminacion: 4, color: 6, texturas: 4 },
+    { bocetos: 6, concepto: 8, iluminacion: 4, color: 2, texturas: 4 },
   );
   for (const item of manifest) {
     assert.ok(item.title && item.alt && item.source);

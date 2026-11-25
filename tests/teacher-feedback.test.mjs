@@ -26,7 +26,7 @@ test('character selection pairs 2D portraits with available 3D renders', async (
   assert.match(characters, /manospared_colorscript\.jpg/);
   assert.match(carousel, /tipoArte/);
   assert.match(carousel, /\$img=\{p\.miniatura\}/);
-  assert.match(carousel, /width:\s*80px/);
+  assert.match(carousel, /width:\s*64px/);
 });
 
 test('locations have an ordered selector and interactive map gems', async () => {
@@ -50,4 +50,60 @@ test('game and sign-language controls expose honest publication and media states
   assert.match(lsc, /videoSrcMobile\?/);
   assert.match(lsc, /<source media="\(max-width: 639px\)"/);
   assert.match(html, /rel="icon"/);
+});
+
+test('video feedback (24 nov): menu order, single typeface and palette', async () => {
+  const [app, menu, css, hero] = await Promise.all([
+    readFile(new URL('../src/App.tsx', import.meta.url), 'utf8'),
+    component('Menu.tsx'),
+    readFile(new URL('../src/index.css', import.meta.url), 'utf8'),
+    component('Hero.tsx'),
+  ]);
+  const order = ['<Hero', '<Cortometraje', '<Videojuego', '<Locaciones', '<Personajes', '<Making', '<Artbook', '<Equipo'].map((tag) => app.indexOf(tag));
+  assert.deepEqual([...order].sort((a, b) => a - b), order, 'sections follow the menu order');
+  assert.match(menu, /\["Making off", "#Making"\]/);
+  assert.match(app, /useHashScroll\(\)/);
+  for (const token of ['--violet: #9431c0', '--cyan: #07f3f3', '--aqua: #0697a8', '--gold: #f4a009', '--navy: #011740']) {
+    assert.ok(css.includes(token), `palette token ${token}`);
+  }
+  assert.match(css, /--sans: "Amarante"/);
+  assert.match(css, /overflow-x: clip/);
+  assert.match(hero, /<VideoLscModal videoSrc=\{inicioLsc\} videoSrcMobile=\{inicioLscVertical\}/);
+});
+
+test('no other typeface is declared in the site styles', async () => {
+  const { readdir } = await import('node:fs/promises');
+  const files = (await readdir(new URL('../src/components/', import.meta.url), { recursive: true }))
+    .filter((name) => /\.tsx?$/.test(name) && !/Galeria|BotonLsc|AnimatedButton/.test(name));
+  for (const name of files) {
+    const text = await component(name);
+    assert.doesNotMatch(text, /Georgia|system-ui/, `${name} uses only Amarante`);
+  }
+  const archiveCss = await readFile(new URL('../src/preproduction.css', import.meta.url), 'utf8');
+  assert.doesNotMatch(archiveCss, /var\(--sans\)|Georgia|font-weight: 700/);
+});
+
+test('locations parchment rolls up between places; characters use larger portraits', async () => {
+  const [locations, characters] = await Promise.all([component('CarouselLocations.tsx'), component('CarouselPersonajes.tsx')]);
+  assert.match(locations, /setRolled\(true\)/);
+  assert.match(locations, /scaleX\(/);
+  assert.match(locations, /prefers-reduced-motion/);
+  assert.match(characters, /clamp\(84px/);
+});
+
+test('preproduction has a sticky chapter bar, reels, in-page lightbox and storyboard pages', async () => {
+  const { readdir } = await import('node:fs/promises');
+  const [page, css] = await Promise.all([
+    component('Preproduction.tsx'),
+    readFile(new URL('../src/preproduction.css', import.meta.url), 'utf8'),
+  ]);
+  assert.match(css, /\.archive-chapters \{ position: sticky; top: 0;/);
+  assert.match(page, /aria-roledescription="carrusel"/);
+  assert.match(page, /role="dialog" aria-modal="true"/);
+  assert.doesNotMatch(page, /href=\{`\/preproduccion\/\$\{item\.id\}\.jpg`\}/);
+  assert.match(page, /-linea\.webp/);
+  assert.match(css, /\.archive-section\.archive-section-bocetos \{ background: #120a1c var\(--archive-texture\)/);
+  const storyboard = (await readdir(new URL('../public/preproduccion/storyboard/', import.meta.url))).filter((name) => name.endsWith('.webp'));
+  assert.equal(storyboard.length, 109);
+  assert.match(page, /STORYBOARD_PAGE_COUNT = 109/);
 });

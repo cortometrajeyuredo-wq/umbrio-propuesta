@@ -6,24 +6,35 @@
   font-display: swap;
 }
 
+/* Paleta oficial de Umbrío (Paleta de Colores.png). Una sola tipografía: Amarante. */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #1c0222;
-  --soft-bg: rgba(7, 18, 19, 0.96);
-  --border: #2e303a;
-  --code-bg: #1f2028;
-  --accent: #f8a308;
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --violet: #9431c0;
+  --cyan: #07f3f3;
+  --aqua: #0697a8;
+  --gold: #f4a009;
+  --navy: #011740;
+  --indigo: #302d5a;
+  --mauve: #c5aebd;
+  --lavender: #8b6cb8;
+  --cream: #f6e9c7;
+  --steel: #8c9eb1;
 
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  /* Variantes de texto sobre fondo oscuro (contraste AA) */
+  --aqua-text: #3fd0dc;
+  --violet-text: #c99ae6;
+
+  --text: var(--cream);
+  --text-h: var(--cream);
+  --bg: #0b0716;
+  --soft-bg: rgba(1, 23, 64, 0.96);
+  --accent: var(--gold);
+
+  --sans: "Amarante", Georgia, serif;
   --heading: "Amarante", Georgia, serif;
-  --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
+  font: 18px/150% var(--sans);
+  letter-spacing: 0.01em;
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -36,40 +47,25 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #1c0222;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #f8a308;
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
 #root {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: var(--bg);
   -ms-overflow-style: none;
 }
+/* clip (no hidden): hidden convierte body en contenedor de scroll y rompe position: sticky. */
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 html,
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
   margin: 0;
 }
 
@@ -82,6 +78,21 @@ body::-webkit-scrollbar {
 html {
   scrollbar-width: none;
   scroll-behavior: smooth;
+  /* Cada sección "ancla" al bajar: proximity para no atrapar secciones largas. */
+  scroll-snap-type: y proximity;
+}
+
+#root > section,
+#root > footer {
+  scroll-snap-align: start;
+  scroll-margin-top: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 a[href],
@@ -92,6 +103,10 @@ input[type="submit"],
 select,
 summary {
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -107,9 +122,10 @@ summary {
   transition: opacity 650ms ease-out, transform 650ms ease-out;
 }
 
-[data-reveal].is-revealed {
+/* transform: none (no translateY(0)) para no atrapar los elementos position: fixed de la sección. */
+[data-reveal][data-revealed] {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -122,30 +138,37 @@ h2,
 h3,
 h4 {
   font-family: var(--heading);
+  font-weight: 400;
   margin: 0;
 }
 
 h2 {
-  font-size: 20px;
-  letter-spacing: 0.24px;
-  font-weight: 500;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   text-align: center;
-  font-weight: 900;
-  color: var(--accent);
+  color: var(--gold);
   @media (min-width: 768px) {
-    font-size: 56px;
+    font-size: 3.5rem;
     line-height: 118%;
   }
 }
 
 h3 {
-  font-size: 20px;
-  letter-spacing: 0.24px;
-  font-weight: 500;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   @media (min-width: 768px) {
-    font-size: 36px;
+    font-size: 2.25rem;
     line-height: 118%;
   }
+}
+
+/* Etiqueta pequeña sobre los títulos: misma letra, mayúsculas, tracking moderado. */
+.kicker {
+  display: inline-block;
+  color: var(--aqua-text);
+  font-size: .85rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }

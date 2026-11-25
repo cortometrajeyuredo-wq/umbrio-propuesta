@@ -1,4 +1,4 @@
-# Umbrío — web actualizada
+# Umbrío · web actualizada
 
 Esta carpeta es una copia de la web React ubicada originalmente en `umbrio-propuesta`. Incluye textos públicos revisados, la ilustración del banner principal y la portada del cortometraje. La galería de creación permanece en el código, pero está oculta en el sitio. La carpeta original no se modificó porque está fuera del espacio de escritura de esta sesión.
 
@@ -15,7 +15,7 @@ Para generar la versión de publicación: `npm run build`.
 
 ## Archivo de preproducción
 
-La sección Making off enlaza a `/preproduccion/`, una página independiente con 28 piezas seleccionadas de `../2. Arte`, el storyboard completo con aviso de spoilers y un enlace al artbook ya publicado.
+La sección Making off enlaza a `/preproduccion/`, una página independiente con 24 piezas seleccionadas de `../2. Arte` en carretes por capítulo (barra de capítulos fija y ampliación en la misma página), el storyboard en láminas con aviso de spoilers y un enlace al artbook. Los sets de color de personajes se retiraron porque repetían la sección Personajes.
 
 Los archivos optimizados se generan en `public/preproduccion/` con PowerShell y el codificador de imágenes de Windows:
 
@@ -24,6 +24,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\export_preproduc
 ```
 
 La selección y sus textos están en `src/data/preproduction.json`. Al cambiarla, ejecuta de nuevo el exportador antes de compilar.
+
+Otros exportadores (Python con pymupdf y pillow):
+
+- `python scripts/export_storyboard.py public/preproduccion/storyboard-umbrio.pdf public/preproduccion/storyboard`: láminas WebP del storyboard. Copia el `STORYBOARD_PAGE_COUNT` que imprime en `Preproduction.tsx`.
+- `python scripts/export_sketch_lines.py public/preproduccion`: versión solo línea (`-linea.webp`) de los bocetos, sin el papel del escaneo.
+- `python scripts/export_artbook.py "../2. Arte/4. Libro de producción/ArtBook_V7_Ajustado_04.pdf" public/artbook`: páginas del artbook (57). Copia el `ARTBOOK_PAGE_COUNT` que imprime en `artbookPages.ts`.
 
 ## Integrar en la web original
 
@@ -48,4 +54,9 @@ La página presenta una selección para público general. Evita divulgar documen
 - Reemplazar los marcos CSS provisionales del juego, equipo y llamadas a la acción por las ilustraciones definitivas de piedra, runas y gemas. Activar los botones de Google Play y App Store solo cuando existan sus fichas públicas.
 - `VideoLscModal` acepta `videoSrcMobile` opcional; conectar ahí los cortes verticales cuando se entreguen. La fuente horizontal actual sigue disponible como respaldo.
 - Los textos de portada y las descripciones públicas requieren la revisión editorial de publicidad mencionada en la reunión.
+- **Renders LSC finales del Inicio**: `Hero.tsx` usa `Inicio.mp4` / `Inicio1.mp4` como provisionales.
+- **Video LSC del Artbook**: no existe; hay que pedírselo a Dayana. Mientras tanto el Artbook muestra "Interpretación LSC del artbook: próximamente".
+- **Tráiler oficial**: `Cortometraje.tsx` reproduce `making_off.mp4` rotulado como video provisional. `Trailer.mp4` es la interpretación LSC del tráiler, no el tráiler.
+- **Fondo con bocetos en delineado** para preproducción (pedido a publicidad/diseño); hoy se usa `fondotextura.webp`.
+- **Cortes verticales de cada video LSC** para móvil (solo existe el del Inicio).
 - Los iconos de redes se añadirán cuando existan los perfiles oficiales y sus enlaces aprobados; el favicon ya usa el logo dorado disponible.

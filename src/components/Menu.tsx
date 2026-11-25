@@ -5,7 +5,7 @@ import brujula from "../assets/img/brujula.webp";
 import umbrioLogo from "../assets/brand/umbrio-logo.png";
 import { useActiveSection } from "../hooks/useActiveSection";
 
-const menuItems = [["Inicio", "#home"], ["El corto", "#Corto"], ["Juego", "#Juego"], ["Locaciones", "#Locaciones"], ["Personajes", "#Personajes"], ["Artbook", "#Artbook"], ["Equipo", "#Equipo"]] as const;
+const menuItems = [["Inicio", "#home"], ["El corto", "#Corto"], ["Juego", "#Juego"], ["Locaciones", "#Locaciones"], ["Personajes", "#Personajes"], ["Making off", "#Making"], ["Artbook", "#Artbook"], ["Equipo", "#Equipo"]] as const;
 const sectionIds = menuItems.map(([, href]) => href.slice(1));
 
 const MobileMenu = () => {
@@ -14,7 +14,7 @@ const MobileMenu = () => {
   return <MobileMenuContainer>
     <MobileBrand href="#home" aria-label="Ir al inicio de Umbrío"><img src={umbrioLogo} alt="Umbrío" /></MobileBrand>
     <MobileMenuWrapper $open={open}><ul>{menuItems.map(([label, href]) => <li key={href}><a href={href} aria-current={activeSection === href.slice(1) ? "page" : undefined} onClick={() => setOpen(false)}>{label}</a></li>)}</ul></MobileMenuWrapper>
-    <MenuButtonWrapper type="button" aria-label="Abrir menú" onClick={() => setOpen((isOpen) => !isOpen)}><img src={brujula} alt="" /></MenuButtonWrapper>
+    <MenuButtonWrapper type="button" aria-label={open ? "Cerrar menú" : "Abrir menú"} aria-expanded={open} onClick={() => setOpen((isOpen) => !isOpen)}><img src={brujula} alt="" /></MenuButtonWrapper>
   </MobileMenuContainer>;
 };
 
@@ -23,9 +23,9 @@ const DesktopMenu = () => {
   const renderLink = ([label, href]: (typeof menuItems)[number]) => <li key={href}><a href={href} aria-current={activeSection === href.slice(1) ? "page" : undefined}>{label}</a></li>;
 
   return <DesktopMenuWrapper>
-  <DesktopLinks>{menuItems.slice(0, 3).map(renderLink)}</DesktopLinks>
+  <DesktopLinks>{menuItems.slice(0, 4).map(renderLink)}</DesktopLinks>
   <DesktopBrand href="#home" aria-label="Ir al inicio de Umbrío"><img src={umbrioLogo} alt="Umbrío" /></DesktopBrand>
-  <DesktopLinks $align="end">{menuItems.slice(3).map(renderLink)}</DesktopLinks>
+  <DesktopLinks $align="end">{menuItems.slice(4).map(renderLink)}</DesktopLinks>
 </DesktopMenuWrapper>;
 };
 
@@ -47,7 +47,7 @@ const MobileMenuWrapper = styled.nav<{ $open: boolean }>`
   transform: translateX(${(props) => props.$open ? "0" : "100%"}); opacity: ${(props) => props.$open ? 1 : 0}; pointer-events: ${(props) => props.$open ? "auto" : "none"};
   transition: transform .5s cubic-bezier(.77, 0, .175, 1), opacity .3s ease;
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
-  a { color: #f6e9c7; font-family: var(--heading); font-size: 1.55rem; text-decoration: none; }
+  a { color: #f6e9c7; font-family: var(--heading); font-size: 1.55rem; text-decoration: none; } a[aria-current="page"] { color: var(--gold); } a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
 `;
 
 const MenuButtonWrapper = styled.button`
@@ -59,8 +59,9 @@ const MenuButtonWrapper = styled.button`
 const DesktopMenuWrapper = styled.nav`
   position: absolute; top: 16px; left: 50%; z-index: 1200; width: min(1120px, calc(100% - 32px)); min-height: 92px; padding: 8px 30px;
   transform: translateX(-50%); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 6px; }
   a { position: relative; color: #f6e9c7; font-family: var(--heading); font-size: clamp(.86rem, 1.4vw, 1.1rem); font-weight: 400; letter-spacing: 1px; text-decoration: none; transition: color .3s ease; }
-  a:hover, a[aria-current="page"] { color: var(--accent); } a::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 0; height: 2px; background: var(--accent); transition: width .3s ease; } a:hover::after, a[aria-current="page"]::after { width: 100%; }
+  a:hover, a[aria-current="page"] { color: var(--gold); } a::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 0; height: 2px; background: var(--cyan); transition: width .3s ease; } a:hover::after, a[aria-current="page"]::after { width: 100%; }
   @media (max-width: 900px) { display: none; }
 `;
 
@@ -72,5 +73,5 @@ const DesktopBrand = styled.a`
   display: block; width: 106px; line-height: 0; transition: transform 180ms ease;
   img { display: block; width: 100%; height: auto; }
   &:hover { transform: rotate(-2deg) scale(1.05); }
-  &:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
+  &:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; border-radius: 8px; }
 `;

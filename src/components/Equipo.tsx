@@ -23,7 +23,7 @@ export const Equipo = () => {
       <VideoLscModal videoSrc={equipoLsc} />
       <Inner>
         <Intro>
-          <Eyebrow>Las personas detrás de Umbrío</Eyebrow>
+          <span className="kicker">Las personas detrás de Umbrío</span>
           <h2>Equipo</h2>
           <p>Artistas, animadores y desarrolladores que dan vida a este universo.</p>
         </Intro>
@@ -33,14 +33,14 @@ export const Equipo = () => {
             {members.map((member, position) => (
               <Card key={member.id} $tone={(startIndex + position) % 3}>
                 <Portrait>
-                  <img src={member.imagen} alt="" loading="lazy" />
+                  <img src={member.imagen} alt="" loading="lazy" width={220} height={260} />
                 </Portrait>
                 <CardText>
                   <h3>{member.nombre}</h3>
                   <p>{member.rol}</p>
                   {member.link && (
                     <a href={member.link} target="_blank" rel="noopener noreferrer" aria-label={`Ver portafolio de ${member.nombre}`}>
-                      Ver portafolio <span aria-hidden="true">↗</span>
+                      Ver portafolio
                     </a>
                   )}
                 </CardText>
@@ -70,34 +70,30 @@ export const Equipo = () => {
 
 const Section = styled.section`
   position: relative;
-  padding: clamp(5rem, 9vw, 8rem) 1.25rem;
-  color: #f6e9d2;
-  background: radial-gradient(circle at 50% 8%, rgba(119, 51, 130, .28), transparent 45%), linear-gradient(180deg, #09070d, #1c0a25 58%, #09070d);
+  box-sizing: border-box;
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding: clamp(4.5rem, 7vh, 6rem) 1.25rem clamp(2rem, 4vh, 3rem);
+  color: var(--cream);
+  background: radial-gradient(circle at 50% 8%, rgba(148, 49, 192, .22), transparent 45%), linear-gradient(180deg, #09070d, #120f2a 58%, #09070d);
 `;
 const Inner = styled.div`
-  max-width: 1280px;
+  width: min(1320px, 100%);
   margin: auto;
 `;
 
 const Intro = styled.header`
   max-width: 700px;
-  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  margin: 0 auto clamp(1.2rem, 2.5vh, 2.5rem);
   text-align: center;
 
-  h2 { margin: .45rem 0 1rem; color: #f4a009; font-size: clamp(3.4rem, 9vw, 7rem); line-height: 1; letter-spacing: .04em; }
-  p { margin: 0; color: #d5c7ca; font: clamp(1rem, 2vw, 1.2rem)/1.6 Georgia, serif; }
-`;
-
-const Eyebrow = styled.span`
-  color: #78d9d6;
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .2em;
-  text-transform: uppercase;
+  h2 { margin: .45rem 0 .8rem; font-size: clamp(3rem, min(8vw, 11vh), 6rem); line-height: 1; letter-spacing: .04em; }
+  p { margin: 0; color: var(--cream); font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.55; }
 `;
 
 const Carousel = styled.div`
-  max-width: 1240px;
+  width: 100%;
   margin: auto;
 `;
 
@@ -129,23 +125,23 @@ const Card = styled.article<{ $tone: number }>`
   flex-direction: column;
   align-items: center;
   min-width: 0;
-  min-height: 420px;
-  padding: 1.5rem 1rem;
-  border: 1px solid ${({ $tone }) => ["#746259", "#426e6b", "#775579"][$tone]};
+  min-height: clamp(360px, 46svh, 500px);
+  padding: 1.75rem 1.25rem;
+  border: 2px solid ${({ $tone }) => ["var(--lavender)", "var(--aqua)", "var(--violet)"][$tone]};
   border-radius: 5px;
-  background: ${({ $tone }) => ["linear-gradient(160deg, #43382f, #19151a)", "linear-gradient(160deg, #363a38, #14191b)", "linear-gradient(160deg, #413642, #19141e)"][$tone]};
+  background: ${({ $tone }) => ["linear-gradient(160deg, #302d5a, #120f26)", "linear-gradient(160deg, #0b2c55, #011740)", "linear-gradient(160deg, #3c1e52, #170c24)"][$tone]};
   box-shadow: inset 0 0 0 4px #211b1a, 0 20px 35px rgba(0, 0, 0, .25);
   transition: transform .25s ease, border-color .25s ease;
 
-  &:hover, &:focus-within { transform: translateY(-4px); border-color: #f4a009; }
+  &:hover, &:focus-within { transform: translateY(-4px); border-color: var(--gold); }
   @media (prefers-reduced-motion: reduce) { transition: none; }
 `;
 
 const Portrait = styled.div`
   overflow: hidden;
-  width: min(170px, 80%);
+  width: min(210px, 82%);
   aspect-ratio: 17 / 20;
-  border: 3px solid #c4a464;
+  border: 3px solid var(--cream);
   border-radius: 50%;
   background: rgba(0, 0, 0, .24);
 
@@ -160,10 +156,11 @@ const CardText = styled.div`
   padding: 1rem .25rem 0;
   text-align: center;
 
-  h3 { color: #f7e7c7; font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.25; text-transform: none; }
-  p { margin: .55rem 0 1rem; color: #c4b9b6; font-size: .8rem; line-height: 1.4; }
-  a { margin-top: auto; color: #76d9d4; font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-decoration: none; text-transform: uppercase; }
-  a:hover, a:focus-visible { color: #f4a009; text-decoration: underline; }
+  h3 { color: var(--cream); font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; text-transform: none; }
+  p { margin: .55rem 0 1rem; color: var(--mauve); font-size: 1rem; line-height: 1.4; }
+  a { display: inline-flex; align-items: center; min-height: 44px; margin-top: auto; color: var(--aqua-text); font-size: .95rem; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
+  a:hover, a:focus-visible { color: var(--gold); text-decoration: underline; }
+  a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 `;
 
 const Controls = styled.div`
@@ -171,7 +168,7 @@ const Controls = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-top: clamp(1.2rem, 3vh, 2rem);
 `;
 
 const Arrow = styled.button`
@@ -179,20 +176,21 @@ const Arrow = styled.button`
   place-items: center;
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(244, 160, 9, .65);
+  border: 2px solid var(--aqua);
   border-radius: 50%;
-  color: #f4a009;
+  color: var(--cyan);
   background: transparent;
 
-  &:hover, &:focus-visible { color: #120b17; background: #f4a009; }
-  &:focus-visible { outline: 2px solid #76d9d4; outline-offset: 3px; }
+  &:hover, &:focus-visible { color: var(--navy); background: var(--cyan); }
+  &:active { transform: scale(.94); }
+  &:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
 `;
 
 const Count = styled.span`
   min-width: 5rem;
-  color: #aa9aa2;
-  font-size: .85rem;
-  letter-spacing: .13em;
+  color: var(--steel);
+  font-size: 1rem;
+  letter-spacing: .06em;
   text-align: center;
-  strong { color: #f6e9d2; font-size: 1.15rem; }
+  strong { color: var(--cream); font-size: 1.2rem; }
 `;

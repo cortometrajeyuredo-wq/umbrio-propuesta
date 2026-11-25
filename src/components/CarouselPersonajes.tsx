@@ -1,16 +1,18 @@
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { personajes } from "../data/personajesData";
-import { device } from "../pantallas/breakpoints";
+
+// Borde del círculo activo: rota entre los colores de la paleta, no siempre dorado.
+const tonos = ["var(--gold)", "var(--cyan)", "var(--violet)"];
 
 export const CarouselPersonajes = () => {
   const [activo, setActivo] = useState(0);
-
   const personaje = personajes[activo];
+  const tono = tonos[activo % tonos.length];
 
   return (
     <CarouselLayout>
-      <ButtonContainer>
+      <ButtonContainer role="group" aria-label="Elegir personaje">
         {personajes.map((p, i) => (
           <Button
             key={p.nombre}
@@ -18,21 +20,22 @@ export const CarouselPersonajes = () => {
             aria-label={`Ver personaje ${p.nombre}`}
             aria-pressed={i === activo}
             $activo={i === activo}
+            $tono={tonos[i % tonos.length]}
             onClick={() => setActivo(i)}
             $img={p.miniatura}
-          ></Button>
+          />
         ))}
       </ButtonContainer>
       <ContentContainer key={activo}>
-        <Description>
+        <Description $tono={tono}>
           <div>
-            <h4>{personaje.nombre}</h4>
+            <h3>{personaje.nombre}</h3>
             <p>{personaje.descripcion}</p>
             <small>{personaje.tipoArte === "3D" ? "Vista del personaje en 3D" : "Ilustración del personaje en 2D"}</small>
           </div>
         </Description>
         <ArtStage>
-          <Image src={personaje.personajeGrande} alt={`${personaje.tipoArte === "3D" ? "Render 3D" : "Ilustración 2D"} de ${personaje.nombre}`} />
+          <Image src={personaje.personajeGrande} alt={`${personaje.tipoArte === "3D" ? "Render 3D" : "Ilustración 2D"} de ${personaje.nombre}`} width={720} height={720} />
         </ArtStage>
       </ContentContainer>
     </CarouselLayout>
@@ -49,67 +52,56 @@ const artReveal = keyframes`
   to { opacity: 1; transform: translateX(0) scale(1); }
 `;
 
-// :::::::::::::::: ================== :::::::::::::::
 const CarouselLayout = styled.div`
-  width: min(100%, 1250px);
+  width: 100%;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: clamp(10px, 1.4vw, 18px);
   justify-content: center;
   align-items: center;
-  margin: 32px 0;
-  position: relative;
-  z-index: 200;
+  margin: clamp(14px, 2.5vh, 26px) 0;
 `;
 
-const Button = styled.button<{ $activo: boolean; $img: string }>`
-  width: 40px;
-  height: 40px;
+const Button = styled.button<{ $activo: boolean; $img: string; $tono: string }>`
+  position: relative;
+  width: 64px;
+  height: 64px;
+  padding: 0;
   border-radius: 50%;
   overflow: hidden;
-  position: relative;
+  border: ${({ $activo, $tono }) => ($activo ? `4px solid ${$tono}` : "2px solid var(--lavender)")};
+  background: var(--indigo) url(${({ $img }) => $img}) center / cover no-repeat;
+  transition: transform .25s ease, border-color .25s ease;
 
-  border: ${({ $activo }) =>
-    $activo ? "3px solid #f4a009" : "2px solid #9431c0"};
-
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  background-image: url(${({ $img }) => $img});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  @media ${device.laptop} {
-    width: 80px;
-    height: 80px;
+  @media (min-width: 1024px) {
+    width: clamp(84px, min(7vw, 11vh), 108px);
+    height: clamp(84px, min(7vw, 11vh), 108px);
   }
 
   &::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-color: ${({ $activo }) =>
-      $activo ? "transparent" : "#00000040"};
-    z-index: 10;
-    transition: all 0.3s ease;
+    background-color: ${({ $activo }) => ($activo ? "transparent" : "rgba(0, 0, 0, .3)")};
+    transition: background-color .25s ease;
   }
 
-  &:hover::before {
-    background-color: transparent;
-  }
+  &:hover { transform: translateY(-3px); }
+  &:hover::before { background-color: transparent; }
+  &:active { transform: scale(.95); }
+  &:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { transition: none; &:hover { transform: none; } }
 `;
 
 const ContentContainer = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
   align-items: center;
-  gap: clamp(20px, 3vw, 42px);
+  gap: clamp(20px, 3vw, 48px);
   width: 100%;
-  margin: 0 auto;
 
   @media (max-width: 760px) {
     grid-template-columns: 1fr;
@@ -117,54 +109,32 @@ const ContentContainer = styled.div`
   }
 `;
 
-const Description = styled.div`
+const Description = styled.div<{ $tono: string }>`
   grid-column: 2;
   grid-row: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  z-index: 200;
   animation: ${copyReveal} .45s ease-out both;
 
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-
-  div {
-    max-width: 440px;
-
-    h4 {
-      color: var(--accent);
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
-      line-height: 1.1;
-    }
-    p {
-      margin: 10px 0 0 0;
-      font-size: clamp(1rem, 1.8vw, 1.35rem);
-      font-weight: 500;
-      line-height: 1.5;
-    }
-  }
+  div { max-width: 460px; }
+  h3 { color: ${({ $tono }) => $tono}; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.1; }
+  p { margin: .7rem 0 0; font-size: clamp(1.05rem, 1.6vw, 1.3rem); line-height: 1.5; }
+  small { display: block; margin-top: 1rem; color: var(--mauve); font-size: .9rem; letter-spacing: .04em; text-transform: uppercase; }
 
   @media (max-width: 760px) {
     grid-column: 1;
     grid-row: 2;
     text-align: center;
-    min-height: 0;
   }
-  small { display: block; margin-top: 1rem; color: #e2c495; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+  @media (prefers-reduced-motion: reduce) { animation: none; }
 `;
 
 const ArtStage = styled.div`
   grid-column: 1;
   grid-row: 1;
   width: 100%;
-  height: clamp(500px, 72vh, 720px);
+  height: clamp(320px, calc(100svh - 330px), 680px);
 
   @media (max-width: 760px) {
-    height: clamp(320px, 60vh, 520px);
+    height: clamp(300px, 52svh, 480px);
   }
 `;
 
@@ -173,11 +143,6 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  position: relative;
-  z-index: 50;
   animation: ${artReveal} .55s cubic-bezier(.22, 1, .36, 1) both;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
+  @media (prefers-reduced-motion: reduce) { animation: none; }
 `;

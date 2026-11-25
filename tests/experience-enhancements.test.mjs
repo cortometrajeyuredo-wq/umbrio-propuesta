@@ -62,9 +62,12 @@ test("team roster is reachable from the page and navigation", async () => {
   assert.match(menu, /\["Equipo", "#Equipo"\]/);
 });
 
-test("film shows its original cover without a coming-soon trailer dialog", async () => {
+test("film offers an expandable, minimisable player with an honest provisional label", async () => {
   const film = await source("src/components/Cortometraje.tsx");
-  assert.match(film, /portadaTrailler/);
-  assert.match(film, /alt="Portada del cortometraje Umbrío/);
-  assert.doesNotMatch(film, /Próximamente|role="dialog"|aria-modal="true"|Trailer\.mp4|<source\b/);
+  assert.match(film, /poster=\{portada\}/);
+  assert.match(film, /Ampliar/);
+  assert.match(film, /Minimizar/);
+  assert.match(film, /Escape/);
+  assert.match(film, /Video provisional/);
+  assert.match(film, /Trailer\.mp4/);
 });

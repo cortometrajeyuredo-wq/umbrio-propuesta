@@ -1,15 +1,40 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import parchment from "../assets/img/pergamino1.webp";
 import { slides } from "../data/locationsData";
 
+const ROLL_MS = 320;
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export const CarruselLocaciones = () => {
   const [index, setIndex] = useState(0);
+  // El texto cambia cuando el pergamino está enrollado, no antes.
+  const [shown, setShown] = useState(0);
+  const [rolled, setRolled] = useState(false);
   const touchStart = useRef<number | null>(null);
+  const timer = useRef<number | null>(null);
+
+  useEffect(() => () => { if (timer.current) window.clearTimeout(timer.current); }, []);
+
+  const move = (direction: -1 | 1) => {
+    const next = (index + direction + slides.length) % slides.length;
+    setIndex(next);
+    if (prefersReducedMotion()) { setShown(next); return; }
+    if (timer.current) window.clearTimeout(timer.current);
+    setRolled(true);
+    timer.current = window.setTimeout(() => {
+      setShown(next);
+      setRolled(false);
+    }, ROLL_MS);
+  };
+
   const slide = slides[index];
   const era = index % 2 === 0 ? "Antes" : "Ahora";
-  const move = (direction: -1 | 1) => setIndex((current) => (current + direction + slides.length) % slides.length);
+  const story = slides[shown];
+  const storyEra = shown % 2 === 0 ? "Antes" : "Ahora";
 
   return <Layout aria-label="Locaciones de Umbrío" aria-roledescription="carrusel" tabIndex={0}
     onKeyDown={(event) => {
@@ -17,7 +42,7 @@ export const CarruselLocaciones = () => {
       if (event.key === "ArrowRight") { event.preventDefault(); move(1); }
     }}>
     <Header>
-      <span>Descubre Tunja</span>
+      <span className="kicker">Descubre Tunja</span>
       <h2>Locaciones</h2>
       <p>Recorre los lugares que inspiran a Umbrío, de su pasado a su presente.</p>
     </Header>
@@ -33,19 +58,19 @@ export const CarruselLocaciones = () => {
         <Visual key={index}>
           <picture>
             <source media="(max-width: 768px)" srcSet={slide.imagenMobil} />
-            <Imagen src={slide.imagenDesktop} alt={`${slide.titulo}, ${era.toLowerCase()}`} />
+            <Imagen src={slide.imagenDesktop} alt={`${slide.titulo}, ${era.toLowerCase()}`} width={780} height={560} />
           </picture>
-          <Era>{era}</Era>
+          <Era $ahora={era === "Ahora"}>{era}</Era>
         </Visual>
         <Arrow type="button" onClick={() => move(1)} aria-label="Locación siguiente"><ChevronRight aria-hidden="true" /></Arrow>
       </ImagePanel>
-      <Story key={index} aria-live="polite">
-        <StoryText>
-          <Counter>{String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")} · {era}</Counter>
-          <h3>{slide.titulo}</h3>
-          <p>{slide.descripcion}</p>
+      <Scroll $rolled={rolled} aria-live="polite">
+        <StoryText $rolled={rolled}>
+          <Counter>{String(shown + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")} · {storyEra}</Counter>
+          <h3>{story.titulo}</h3>
+          <p>{story.descripcion}</p>
         </StoryText>
-      </Story>
+      </Scroll>
     </Feature>
     <Hint>Usa las flechas o desliza para continuar</Hint>
   </Layout>;
@@ -55,35 +80,31 @@ const imageReveal = keyframes`
   from { opacity: .35; transform: translateX(20px) scale(.97); }
   to { opacity: 1; transform: translateX(0) scale(1); }
 `;
-const pageOpen = keyframes`
-  from { opacity: .6; transform: perspective(900px) rotateY(-12deg) scaleX(.92); }
-  to { opacity: 1; transform: perspective(900px) rotateY(0) scaleX(1); }
-`;
 const Layout = styled.div`
-  width: min(1280px, 100% - 3rem); margin: auto;
-  padding: clamp(5rem, 8vw, 8rem) 0 5rem; color: #f6e9d2;
-  &:focus-visible { outline: 2px solid #7fdbd2; outline-offset: 8px; }
+  width: min(1320px, 100% - 3rem); margin: auto;
+  padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(5rem, 10vh, 6.5rem); color: var(--cream);
+  @media (max-width: 639px) { padding-top: 1rem; }
+  &:focus-visible { outline: 2px solid var(--cyan); outline-offset: 8px; }
 `;
 const Header = styled.header`
-  max-width: 760px; margin: 0 auto clamp(2rem, 4vw, 4rem); text-align: center;
-  span { color: #7fdbd2; font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; }
-  h2 { margin: .5rem 0 1rem; font-size: clamp(2.7rem, 6vw, 5rem); }
-  p { margin: 0; font-size: clamp(1rem, 1.5vw, 1.18rem); line-height: 1.55; }
-  @media (max-width: 639px) { padding-top: 110px; }
+  max-width: 760px; margin: 0 auto clamp(1.2rem, 3.5vh, 2.5rem); text-align: center;
+  h2 { margin: .4rem 0 .6rem; font-size: clamp(2.5rem, min(5.5vw, 8vh), 4.6rem); }
+  p { margin: 0; font-size: clamp(1rem, 1.5vw, 1.18rem); line-height: 1.5; }
 `;
 const Feature = styled.div`
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center; gap: clamp(1rem, 3vw, 4rem);
+  display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  align-items: center; gap: clamp(1rem, 2.5vw, 3rem);
   @media (max-width: 900px) { grid-template-columns: 1fr; }
 `;
 const ImagePanel = styled.div`display: flex; align-items: center; gap: .4rem; min-width: 0;`;
 const Arrow = styled.button`
-  display: grid; place-items: center; flex: none; width: 42px; height: 48px;
-  padding: 0; border: 0; color: #f4a009; background: transparent; cursor: pointer;
+  display: grid; place-items: center; flex: none; width: 44px; height: 48px;
+  padding: 0; border: 0; color: var(--cyan); background: transparent;
   svg { width: 34px; height: 34px; }
-  &:hover { color: #f6e9d2; }
-  &:focus-visible { outline: 2px solid #7fdbd2; outline-offset: 2px; }
-  @media (max-width: 600px) { width: 32px; svg { width: 28px; height: 28px; } }
+  &:hover { color: var(--cream); }
+  &:active { transform: scale(.92); }
+  &:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  @media (max-width: 600px) { svg { width: 28px; height: 28px; } }
 `;
 const Visual = styled.div`
   position: relative; min-width: 0; flex: 1; animation: ${imageReveal} .45s ease-out both;
@@ -91,30 +112,55 @@ const Visual = styled.div`
   @media (prefers-reduced-motion: reduce) { animation: none; }
 `;
 const Imagen = styled.img`
-  display: block; width: 100%; height: min(55vh, 560px); object-fit: contain;
-  @media (max-width: 900px) { height: min(50vh, 440px); }
+  display: block; width: 100%; height: min(50vh, 520px); object-fit: contain;
+  @media (max-width: 900px) { height: min(40vh, 400px); }
 `;
-const Era = styled.span`
-  position: absolute; left: .6rem; bottom: .6rem; padding: .35rem .7rem;
-  color: #201016; background: #f4a009; font: .75rem var(--heading); text-transform: uppercase;
+const Era = styled.span<{ $ahora: boolean }>`
+  position: absolute; left: .6rem; bottom: .6rem; padding: .3rem .8rem;
+  color: ${({ $ahora }) => ($ahora ? "var(--navy)" : "var(--cream)")};
+  background: ${({ $ahora }) => ($ahora ? "var(--cyan)" : "var(--violet)")};
+  font-size: .9rem; text-transform: uppercase; letter-spacing: .04em;
 `;
-const Story = styled.div`
-  display: grid; place-items: center; min-width: 0; min-height: 410px;
-  padding: clamp(2rem, 4vw, 4rem); box-sizing: border-box;
+
+/*
+ * Pergamino: al cambiar de locación se enrolla hacia el centro (scaleX) y vuelve
+ * a desenrollarse con el texto nuevo. Los bordes oscuros simulan los rodillos.
+ */
+const Scroll = styled.div<{ $rolled: boolean }>`
+  position: relative;
+  display: grid; place-items: center; min-width: 0;
+  min-height: clamp(360px, 54vh, 540px);
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(2.5rem, 6vw, 5.5rem); box-sizing: border-box;
   background: url(${parchment}) center / 100% 100% no-repeat;
-  animation: ${pageOpen} .55s cubic-bezier(.22, 1, .36, 1) both;
-  @media (max-width: 900px) { min-height: 350px; }
-  @media (max-width: 600px) { min-height: 430px; padding: 2.5rem 2rem; }
-  @media (prefers-reduced-motion: reduce) { animation: none; }
+  transform-origin: center;
+  transform: scaleX(${({ $rolled }) => ($rolled ? 0.06 : 1)});
+  transition: transform ${ROLL_MS}ms cubic-bezier(.55, 0, .45, 1);
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .45));
+
+  &::before, &::after {
+    content: ""; position: absolute; top: 3%; bottom: 3%; width: 18px; border-radius: 9px;
+    background: linear-gradient(90deg, #5a3a1c, #c99a5b 45%, #5a3a1c);
+    opacity: ${({ $rolled }) => ($rolled ? 1 : 0)};
+    transition: opacity ${ROLL_MS / 2}ms ease;
+  }
+  &::before { left: -6px; }
+  &::after { right: -6px; }
+
+  @media (max-width: 900px) { min-height: 330px; }
+  @media (max-width: 600px) { min-height: 400px; padding: 2.5rem 2rem; }
+  @media (prefers-reduced-motion: reduce) { transition: none; &::before, &::after { transition: none; } }
 `;
-const StoryText = styled.div`
-  width: 100%; max-width: 44ch; text-align: center; color: #30212a;
-  h3 { margin: .5rem 0 1rem; color: #211a34; font-size: clamp(1.5rem, 2.5vw, 2.2rem); line-height: 1.15; }
-  p { margin: 0; font: clamp(.9rem, 1.25vw, 1.1rem)/1.55 Georgia, serif; }
+const StoryText = styled.div<{ $rolled: boolean }>`
+  width: 100%; max-width: 52ch; text-align: center; color: #2a1d26;
+  opacity: ${({ $rolled }) => ($rolled ? 0 : 1)};
+  transition: opacity ${ROLL_MS / 2}ms ease;
+  h3 { margin: .5rem 0 1rem; color: var(--indigo); font-size: clamp(1.6rem, 2.6vw, 2.4rem); line-height: 1.15; }
+  p { margin: 0; font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.55; }
+  @media (prefers-reduced-motion: reduce) { transition: none; }
 `;
 const Counter = styled.span`
-  color: #654047; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: #6a2e86; font-size: .9rem; letter-spacing: .06em; text-transform: uppercase;
 `;
 const Hint = styled.p`
-  margin: 1rem 0 0; color: #b8a890; font-size: .7rem; letter-spacing: .1em; text-align: center; text-transform: uppercase;
+  margin: 1rem 0 0; color: var(--steel); font-size: .85rem; letter-spacing: .05em; text-align: center; text-transform: uppercase;
 `;

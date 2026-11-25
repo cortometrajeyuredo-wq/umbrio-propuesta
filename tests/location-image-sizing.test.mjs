@@ -6,7 +6,7 @@ test('location artwork fits the page and stacks above copy on narrow screens', a
   const source = await readFile(new URL('../src/components/CarouselLocations.tsx', import.meta.url), 'utf8');
   const image = source.match(/const Imagen = styled\.img`([^`]*)`;/s)?.[1];
   assert.ok(image);
-  assert.match(image, /height:\s*min\(55vh,\s*560px\)/);
+  assert.match(image, /height:\s*min\(50vh,\s*520px\)/);
   assert.match(image, /object-fit:\s*contain/);
   assert.match(source, /const Feature = styled\.div`[\s\S]*?@media \(max-width: 900px\) \{ grid-template-columns: 1fr; \}/);
   assert.doesNotMatch(source, /Triangulos|Triangulo/);

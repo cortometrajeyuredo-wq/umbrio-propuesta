@@ -50,7 +50,7 @@ const ClosingCopy = styled.div`
   margin: -1rem auto 3rem;
   padding: 0 1.25rem;
   box-sizing: border-box;
-  span { color: #76d9d4; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; }
+  span { color: var(--aqua-text); font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; }
   p { margin: .5rem 0 0; max-width: 580px; color: #f6e9c7; font: clamp(1.25rem, 2.7vw, 2rem)/1.3 var(--heading); }
 `;
 

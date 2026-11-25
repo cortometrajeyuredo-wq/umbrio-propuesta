@@ -10,7 +10,7 @@ test('the opening character remains contained beside the title on desktop and mo
   assert.match(hero, /sombreron_pose_espalda\.webp/);
   assert.match(hero, /object-fit:\s*contain/);
   assert.match(hero, /@media \(max-width: 850px\)/);
-  assert.match(hero, /<HeroLinks>/);
+  assert.doesNotMatch(hero, /<HeroLinks>|href="#Corto"|href="#Juego"/);
   assert.match(hero, /<h1>Donde la memoria de la ciudad se encuentra con sus leyendas\.<\/h1>/);
 });
 

@@ -1,76 +1,51 @@
 import styled from "styled-components";
 import { CarouselPersonajes } from "./CarouselPersonajes";
-//import { useMenu } from "../context/MenuContext";
 import { VideoLscModal } from "./ui/VideoLscModal";
-//import { BotonLsc } from "./ui/BotonLsc";
 import PersonajesVideo from "../assets/videos/Personajes.mp4";
 import fondo from "../assets/img/fondo2.webp";
 
-export const Personajes = () => {
-  //const { menuAbierto } = useMenu();
-  return (
-    <PersonajesWrapper id="Personajes" data-reveal>
-      <Container>
-        <Titulo>PERSONAJES</Titulo>
-        <CarouselPersonajes />
-
-        <VideoLscModal videoSrc={PersonajesVideo} />
-      </Container>
-    </PersonajesWrapper>
-  );
-};
+export const Personajes = () => (
+  <PersonajesWrapper id="Personajes" data-reveal>
+    <VideoLscModal videoSrc={PersonajesVideo} />
+    <Container>
+      <h2>Personajes</h2>
+      <CarouselPersonajes />
+    </Container>
+  </PersonajesWrapper>
+);
 
 const PersonajesWrapper = styled.section`
+  position: relative;
+  box-sizing: border-box;
+  min-height: 100svh;
   display: flex;
-  flex-direction: column;
+  @media (max-width: 639px) { flex-direction: column; }
   align-items: center;
   justify-content: center;
-  padding: 100px 20px;
-  position: relative;
-  background-image: url(${fondo});
-  background-size: cover;
-  background-position: top;
-  /* Fondo con filtro de escala de grises */
+  padding: clamp(3.5rem, 8vh, 5.5rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vh, 3.5rem);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--cream);
+  background: #000 url(${fondo}) top / cover no-repeat;
+
+  /* Unión con las secciones vecinas: negro arriba y abajo. */
   &::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgb(0, 0, 0),
-      transparent,
-      transparent
-    );
-  }
-  /* capa degradada para las uniones de los fondops negra-transparente-negra */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgb(0, 0, 0), transparent, #000000 90%);
-    z-index: 100;
+    z-index: -1;
+    background: linear-gradient(to bottom, #000 0%, transparent 28%, transparent 72%, #000 100%);
   }
 
-  /* todo el contenido por encima */
-  > * {
-    position: relative;
-  }
-
-  @media (max-width: 768px) {
-    padding: 50px 10px;
+  @media (max-width: 760px) {
+    padding-top: 150px;
   }
 `;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  width: min(100%, 1250px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-`;
-const Titulo = styled.h2`
-  position: relative;
-  text-align: center;
-  z-index: 200;
+  h2 { margin: 0; }
 `;

@@ -5,12 +5,15 @@ import fondo from "../assets/img/fondoCorto.webp";
 import capturaMenu from "../assets/game/captura-menu.png";
 import capturaEncuentro from "../assets/game/captura-encuentro.png";
 import capturaAcertijo from "../assets/game/captura-acertijo.png";
+import juegoLsc from "../assets/videos/APP_STORE .mp4";
+import { VideoLscModal } from "./ui/VideoLscModal";
 
 export const Videojuego = () => (
   <Section id="Juego" data-reveal aria-labelledby="game-title">
+    <VideoLscModal videoSrc={juegoLsc} />
     <Inner>
       <Intro>
-        <Kicker><span /> Videojuego</Kicker>
+        <Kicker className="kicker"><span /> Videojuego</Kicker>
         <h2 id="game-title">La ciudad guarda<br /><em>otra historia.</em></h2>
         <Lead>
           Umbrío imagina a Tunja como un territorio de misterio. Explora sus lugares,
@@ -37,9 +40,9 @@ export const Videojuego = () => (
         <Gallery aria-label="Imágenes del videojuego">
           <GalleryHeading>Dentro del juego</GalleryHeading>
           <GalleryGrid>
-            <figure><img src={capturaMenu} alt="Pantalla inicial del juego Umbrío" loading="lazy" /><figcaption>Inicio</figcaption></figure>
-            <figure><img src={capturaEncuentro} alt="Encuentro con un espanto en el juego" loading="lazy" /><figcaption>Encuentro</figcaption></figure>
-            <figure><img src={capturaAcertijo} alt="Acertijo durante la exploración" loading="lazy" /><figcaption>Acertijo</figcaption></figure>
+            <figure><img src={capturaMenu} alt="Pantalla inicial del juego Umbrío" loading="lazy" width={540} height={960} /><figcaption>Inicio</figcaption></figure>
+            <figure><img src={capturaEncuentro} alt="Encuentro con un espanto en el juego" loading="lazy" width={540} height={960} /><figcaption>Encuentro</figcaption></figure>
+            <figure><img src={capturaAcertijo} alt="Acertijo durante la exploración" loading="lazy" width={540} height={960} /><figcaption>Acertijo</figcaption></figure>
           </GalleryGrid>
         </Gallery>
       </MediaArea>
@@ -56,8 +59,11 @@ const Section = styled.section`
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 100vh;
-  padding: clamp(5rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem) 3rem;
+  box-sizing: border-box;
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding: clamp(4.5rem, 9vh, 7rem) clamp(1.25rem, 5vw, 5rem) 2.5rem;
   color: #f5ead4;
   background: #090b0e;
 
@@ -102,9 +108,9 @@ const Inner = styled.div`
 
 const Intro = styled.div`
   h2 {
-    margin: 1.5rem 0 1.75rem;
-    color: #f6e8c8;
-    font-size: clamp(2.8rem, 5.3vw, 5.8rem);
+    margin: 1.2rem 0 1.4rem;
+    color: var(--cream);
+    font-size: clamp(2.6rem, min(5vw, 8.5vh), 5.4rem);
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: -.025em;
@@ -112,7 +118,7 @@ const Intro = styled.div`
     text-transform: none;
   }
 
-  h2 em { color: #eba94c; font-style: normal; }
+  h2 em { color: var(--violet-text); font-style: normal; }
 `;
 
 const Kicker = styled.p`
@@ -120,11 +126,6 @@ const Kicker = styled.p`
   align-items: center;
   gap: .8rem;
   margin: 0;
-  color: #75d2ca;
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .2em;
-  text-transform: uppercase;
 
   span { width: 1.4rem; height: 1px; background: currentColor; }
 `;
@@ -132,9 +133,9 @@ const Kicker = styled.p`
 const Lead = styled.p`
   max-width: 34rem;
   margin: 0 0 2.5rem;
-  color: #d5d2c9;
+  color: var(--cream);
   font-size: clamp(1rem, 1.35vw, 1.18rem);
-  line-height: 1.75;
+  line-height: 1.65;
 `;
 
 const Concepts = styled.ol`
@@ -152,14 +153,12 @@ const Concept = styled.li`
   padding: .9rem 0;
   border-bottom: 1px solid rgba(245, 234, 212, .25);
   color: #f4ead7;
-  font-size: .92rem;
-  letter-spacing: .025em;
+  font-size: 1rem;
 `;
 
 const Number = styled.span`
-  color: #75d2ca;
-  font-family: var(--heading);
-  font-size: .85rem;
+  color: var(--aqua-text);
+  font-size: 1rem;
 `;
 
 const MediaArea = styled.div`min-width: 0;`;
@@ -168,15 +167,15 @@ const StoreButtons = styled.div`
   display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem;
   button {
     display: inline-flex; align-items: center; gap: .8rem; min-width: 180px; min-height: 64px;
-    padding: .65rem 1rem; border: 1px solid #b58b55; border-radius: 7px;
-    color: #f6e9d2; background: linear-gradient(140deg, #243042, #151b2b 72%);
+    padding: .65rem 1rem; border: 1px solid var(--lavender); border-radius: 7px;
+    color: #f6e9d2; background: var(--navy);
     box-shadow: inset 0 0 0 2px #384052, 0 10px 30px #0007;
     text-align: left; cursor: not-allowed; opacity: 1;
   }
-  svg { width: 29px; height: 29px; flex: none; color: #e7ac52; }
+  svg { width: 29px; height: 29px; flex: none; color: var(--cyan); }
   span { display: grid; gap: .15rem; }
-  small { color: #85d5d5; font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; }
-  strong { font: 1rem var(--heading); white-space: nowrap; }
+  small { color: var(--mauve); font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; }
+  strong { font-size: 1.05rem; font-weight: 400; white-space: nowrap; }
 `;
 
 const Gallery = styled.div`width: 100%;`;
@@ -203,17 +202,18 @@ const GalleryGrid = styled.div`
   img {
     display: block;
     width: 100%;
-    aspect-ratio: 9 / 16;
-    object-fit: contain;
+    height: min(52svh, 500px);
+    object-fit: cover;
+    object-position: center;
     border: 1px solid rgba(245, 234, 212, .24);
     background: rgba(3, 7, 10, .78);
   }
 
   figcaption {
     padding-top: .55rem;
-    color: #75d2ca;
-    font-size: .63rem;
-    letter-spacing: .16em;
+    color: var(--aqua-text);
+    font-size: .85rem;
+    letter-spacing: .06em;
     text-transform: uppercase;
   }
 `;
@@ -223,12 +223,12 @@ const FooterNote = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: clamp(3rem, 8vw, 7rem);
+  margin-top: clamp(1.5rem, 5vh, 3.5rem);
   padding-top: 1.2rem;
   border-top: 1px solid rgba(245, 234, 212, .2);
-  color: #b8bbb4;
-  font-size: .68rem;
-  letter-spacing: .12em;
+  color: var(--steel);
+  font-size: .85rem;
+  letter-spacing: .05em;
   text-transform: uppercase;
 
   @media (max-width: 600px) { flex-direction: column; }

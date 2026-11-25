@@ -7,7 +7,8 @@ export const useSectionReveal = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-revealed");
+          // Atributo propio (no className): React reescribe className y borraría la marca.
+          entry.target.setAttribute("data-revealed", "");
           observer.unobserve(entry.target);
         });
       },

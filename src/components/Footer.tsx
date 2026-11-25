@@ -50,14 +50,14 @@ const ClosingFrame = styled.div`
   width: 100%;
   background: #09030d;
   img { display: block; width: 100%; height: auto; }
-  &::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, #09030d 0%, transparent 10%, transparent 80%, #09030d 100%); }
+  &::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, #09030d 0%, transparent 10%, transparent 95%, #09030d 100%); }
 `;
 
 const ClosingCopy = styled.div`
   position: relative;
   z-index: 1;
   width: min(1120px, 100%);
-  margin: -1rem auto 3rem;
+  margin: 1.5rem auto 3rem;
   padding: 0 1.25rem;
   box-sizing: border-box;
   span { color: var(--aqua-text); font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; }

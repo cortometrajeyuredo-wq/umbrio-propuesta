@@ -62,15 +62,13 @@ test("team roster is reachable from the page and navigation", async () => {
   assert.match(menu, /\["Equipo", "#Equipo"\]/);
 });
 
-test("film uses the native player with a cover-only placeholder (no unrelated video)", async () => {
+test("film uses only the native player with a cover-only placeholder (no unrelated video, no expand/minimise)", async () => {
   const film = await source("src/components/Cortometraje.tsx");
   assert.match(film, /poster=\{portada\}/);
   assert.match(film, /trailer-simulado\.mp4/);
   assert.doesNotMatch(film, /making_off/);
   assert.match(film, /<video[^>]*controls/);
-  assert.match(film, /Ampliar/);
-  assert.match(film, /Minimizar/);
-  assert.match(film, /Escape/);
+  assert.doesNotMatch(film, /Ampliar|Minimizar/);
   assert.match(film, /Simulación del reproductor/);
   assert.match(film, /Trailer\.mp4/);
 });

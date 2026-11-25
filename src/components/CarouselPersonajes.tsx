@@ -31,7 +31,6 @@ export const CarouselPersonajes = () => {
           <div>
             <h3>{personaje.nombre}</h3>
             <p>{personaje.descripcion}</p>
-            <small>{personaje.tipoArte === "3D" ? "Vista del personaje en 3D" : "Ilustración del personaje en 2D"}</small>
           </div>
         </Description>
         <ArtStage>
@@ -117,7 +116,6 @@ const Description = styled.div<{ $tono: string }>`
   div { max-width: 460px; }
   h3 { color: ${({ $tono }) => $tono}; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.1; }
   p { margin: .7rem 0 0; font-size: clamp(1.05rem, 1.6vw, 1.3rem); line-height: 1.5; }
-  small { display: block; margin-top: 1rem; color: var(--mauve); font-size: .9rem; letter-spacing: .04em; text-transform: uppercase; }
 
   @media (max-width: 760px) {
     grid-column: 1;

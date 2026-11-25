@@ -97,7 +97,9 @@ const Inner = styled.div`
   margin: auto;
   display: grid;
   grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-  column-gap: clamp(2rem, 6vw, 7rem);
+  column-gap: clamp(2rem, 4.5vw, 5rem);
+
+  @media (min-width: 1400px) { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
   align-items: center;
 
   @media (max-width: 900px) {
@@ -105,9 +107,10 @@ const Inner = styled.div`
     gap: 3.5rem;
   }
 
-  /* Escritorio: reserva el ancho del modal LSC (esquina superior derecha) para que no tape las capturas. */
+  /* Escritorio: reserva solo la parte del modal LSC (esquina superior derecha) que invade el contenido,
+     descontando el margen que ya queda a la derecha (padding de la sección o centrado del máximo de 1380px). */
   @media (min-width: 1024px) {
-    padding-right: calc(clamp(170px, min(17vw, 27vh), 290px) + clamp(12px, 2.5vw, 36px));
+    padding-right: max(0px, calc(clamp(170px, min(17vw, 27vh), 290px) + clamp(12px, 2.5vw, 36px) + 1.5rem - max(clamp(1.25rem, 5vw, 5rem), (100vw - 1380px) / 2)));
     box-sizing: border-box;
   }
 `;
@@ -203,7 +206,7 @@ const GalleryGrid = styled.div`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(.5rem, 1.2vw, 1rem);
 
-  figure { min-width: 0; max-width: calc(min(52svh, 500px) * 400 / 874 + 1.1rem); margin: 0; padding: .45rem; border: 2px solid #827363; background: linear-gradient(140deg, #403833, #19171e 70%); box-shadow: inset 0 0 0 2px #201b1c, 0 14px 25px #0008; }
+  figure { min-width: 0; max-width: calc(min(60svh, 560px) * 400 / 874 + 1.1rem); margin: 0; padding: .45rem; border: 2px solid #827363; background: linear-gradient(140deg, #403833, #19171e 70%); box-shadow: inset 0 0 0 2px #201b1c, 0 14px 25px #0008; }
 
   img {
     display: block;

@@ -111,5 +111,5 @@ test('LSC modal never floats over content on phones and tablets in portrait', as
   const [modal, juego] = await Promise.all([component('ui/VideoLscModal.tsx'), component('Videojuego.tsx')]);
   assert.match(modal, /@media \(max-width: 1023px\) \{\s*position: relative;/);
   assert.match(modal, /\(max-height: 600px\) and \(orientation: landscape\)/);
-  assert.match(juego, /padding-right: calc\(clamp\(170px, min\(17vw, 27vh\), 290px\)/);
+  assert.match(juego, /padding-right: max\(0px, calc\(clamp\(170px, min\(17vw, 27vh\), 290px\)/);
 });
